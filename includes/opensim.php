@@ -59,8 +59,9 @@ class OpenSim
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = "SELECT regions.*, users.username, users.lastname FROM regions LEFT JOIN users ON regions.owner_uuid = users.UUID";
-    if ($search != "") $query .= " WHERE regions.regionName LIKE '$search'";
+    if (!is_null($search) && $search != "") $query .= " WHERE regions.regionName LIKE '$search'";
     $query .= " ORDER BY regionName";
+
     if ($start || $end)	$query .= " LIMIT $start, $end";
 
     if ($result = mysql_query($query)) {
@@ -188,6 +189,10 @@ class OpenSim
     mysql_close(); 
   }
 
+  public function checkSimulator($address, $port) {
+    $timeout = 2;
+    return @fsockopen("$address", $port, $errno, $errstr, $timeout);
+  }
   
 }
 
