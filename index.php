@@ -32,24 +32,6 @@
   	include($TEMPLATE_PATH . "index.html");
 
 
-/*
-    if ($_REQUEST["page"] == "latest")
-	include($TEMPLATE_PATH . "latest.html");
-    elseif ($_REQUEST["page"] == "status")
-	include($TEMPLATE_PATH . "status.html");
-    elseif ($_REQUEST["page"] == "users")
-	include($TEMPLATE_PATH . "users.html");
-    elseif ($_REQUEST["page"] == "regions")
-	include($TEMPLATE_PATH . "regions.html");
-    elseif ($_REQUEST["page"] == "map")
-	include($TEMPLATE_PATH . "map.html");
-    elseif ($_REQUEST["page"] == "faq")
-	include($TEMPLATE_PATH . "faq.html");
-    elseif ($_REQUEST["page"] == "opensim")
-	include($TEMPLATE_PATH . "opensim.html");
-    else
-  	include($TEMPLATE_PATH . "index.html");
-*/
     include($TEMPLATE_PATH . "footer.html"); 
 
   ?>
