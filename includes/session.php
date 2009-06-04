@@ -48,7 +48,7 @@ Class Session {
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     // Get online user count
-    $query="SELECT * FROM users WHERE username='$fname' AND lastname='$lname'";
+    $query = $this->cleanQuery("SELECT * FROM users WHERE username='$fname' AND lastname='$lname'");
     $result = mysql_query($query);    
     if (mysql_numrows($result)) {
 	$this->firstname = mysql_result($result, 0, "username");
@@ -66,8 +66,8 @@ Class Session {
     mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
-    // Get online user count
-    $query="SELECT * FROM users WHERE username='$firstname' AND lastname='$lastname'";
+    // Get user
+    $query = $this->cleanQuery("SELECT * FROM users WHERE username='$firstname' AND lastname='$lastname'");
     $result = mysql_query($query);
     if (mysql_numrows($result)) {
 	// We have found the user
@@ -81,6 +81,16 @@ Class Session {
     }
 
     mysql_close();
+  }
+  
+  public function cleanQuery($string)
+  {
+    if(get_magic_quotes_gpc()) $string = stripslashes($string);
+
+    if (phpversion() >= '4.3.0')
+      $string = mysql_real_escape_string($string);
+    else
+      $string = mysql_escape_string($string);
   }
 
 }
