@@ -1,0 +1,27 @@
+<div id='topMnu'>
+  <table id='topMnuTbl'>
+    <tr valign=top>
+      <td id='topMnuTblLogo'><img src='<?php echo $TEMPLATE_PATH; ?>/images/oswi_logo.png' alt='OpenSimulator'></td>
+      <td id='logonStatus'>
+	<?php 
+	  if ($session->logged_in) 
+	    echo $session->lang['GEN_WELCOME'] . " " . $session->username . "<br>[<a href='?page=myaccount'>" . $session->lang['GEN_MY_ACCOUNT'] . "</a> | <a href='?action=logoff&page=" . $_REQUEST['page'] . "'>" . $session->lang['GEN_LOGOFF'] . "</a>]" ; 
+	  else 
+	    echo $session->lang['GEN_WELCOME'] . " " .  $session->lang['GEN_GUEST'] . "<br>[<a href='?page=logon'>" . $session->lang['GEN_LOGON'] . "</a> | <a href='?page=create'>" . $session->lang['GEN_CREATE_ACCOUNT'] . "</a>]"; 
+	?></td>
+    </tr>
+    <tr>
+      <td id='topMnuTblMenu'>
+	<a href="?"><?php echo $session->lang['LI_HOME']; ?></a> | 
+	<a href="?page=latest"><?php echo $session->lang['LI_LATEST']; ?></a> | 
+	<a href="?page=status"><?php echo $session->lang['LI_STATUS']; ?></a> | 
+	<a href="?page=users"><?php echo $session->lang['LI_USERS']; ?></a> | 
+	<a href="?page=regions"><?php echo $session->lang['LI_REGIONS']; ?></a> | 
+	<a href="?page=map"><?php echo $session->lang['LI_MAP']; ?></a> | 
+	<a href="?page=faq"><?php echo $session->lang['LI_FAQ']; ?></a> | 
+	<a href="?page=opensim"><?php echo $session->lang['LI_OPENSIM']; ?></a>
+      </td>
+      <td id='langBar'><?php echo $session->lClass->getLanguageBar(); ?></td>
+    </tr>
+  </table>
+</div>

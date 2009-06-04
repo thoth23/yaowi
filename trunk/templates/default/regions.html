@@ -1,0 +1,44 @@
+    <table>
+      <tr><td><?php echo $session->lang['GEN_SEARCH']; ?></td><td><input type="text" id="regionSearch" autocomplete="off"></td><td><input type="submit" value="<?php echo $session->lang['GEN_SEARCH']; ?>"></td></tr>
+    </table>
+    <div class="autocomplete" id="regionList" style="display:none"></div>
+
+    <script type="text/javascript">
+    var regions = [<?php
+      $regions = $osInfo->getRegionList();
+
+      foreach ($regions as $reg) {
+        echo "'" . $reg["regionName"] . "',";
+      }
+
+    ?>""];
+    var typeahead = new Autocompleter.Local('regionSearch', 'regionList', regions, {
+                            frequency: 0.1
+                        });
+    </script>
+    <br><br>
+    <table width=100% cellspacing=0 class='regionList'>
+      <tr class='regionListTR'>
+	<td class='regionListTD'><a href='#'><?php echo $session->lang['REGION_NAME']; ?></a></td>
+	<td class='regionListTD'><a href='#'><?php echo $session->lang['REGION_LOCATION']; ?></a></td>
+	<td class='regionListTD'><a href='#'><?php echo $session->lang['REGION_OWNER']; ?></a></td>
+      </tr>
+    <?php
+      $rC = 0;
+      foreach ($regions as $reg) {
+	if ($rc++%2==0) 
+	  $style=" style='background: #333333;'";
+	else 
+	  $style=" style='background: #000000;'";
+
+	echo "\t<tr$style><td>" . $reg["regionName"] . "</td><td>" . $reg["locX"] . "," . $reg["locY"] . "</td><td>" . $reg["username"] . " " . $reg["lastname"] . "</td></tr>\n";
+
+//	echo "<a href='#' title='Owner:&nbsp;" . str_replace(" ", "&nbsp;", $osInfo->getNameFromUUID($reg["owner_uuid"])) . ", Location:&nbsp;" . $reg["locX"] . "," . $reg["locY"] . "'>" . $reg["regionName"] . "</a><br>";
+
+//        echo "<div id='" . $reg["regionName"] . "' onMouseOver=\"Effect.BlindDown('" . $reg["uuid"] . "', { duration: 0.3 }); return false;\" onMouseOut=\"Effect.BlindUp('" . $reg["uuid"] . "', { duration: 0.3 }); return false;\">" . $reg["regionName"] . "</div><div id='" . $reg["uuid"] . "' style='display: none;'>Owner: ";
+//        echo $osInfo->getNameFromUUID($reg["owner_uuid"]);
+//        echo ", Location: " . $reg["locX"] . ", " . $reg["locY"] . "</div><br>";
+
+      }
+    ?>
+    </table>
