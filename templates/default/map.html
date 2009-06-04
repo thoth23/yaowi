@@ -1,0 +1,45 @@
+<div id="map"></div>
+<script type="text/javascript">
+  function get_my_url (bounds) {
+        var res = this.map.getResolution();
+        var x = Math.round ((bounds.left - this.maxExtent.left) / (res * this.tileSize.w));
+        var y = Math.round ((this.maxExtent.top - bounds.top) / (res * this.tileSize.h));
+        var z = this.map.getZoom();
+
+        var path = "map.php?x=" + x + "&y=" + y; 
+        var url = this.url;
+        if (url instanceof Array) {
+            url = this.selectUrl(path, url);
+        }
+        return url + path;
+  }
+
+//  map = new OpenLayers.Map('map', { controls: [], numZoomLevels: 3, maxResolution: 0.1  });
+
+  map = new OpenLayers.Map('map', { 
+    maxExtent: new OpenLayers.Bounds(0,0,1000,1000), 
+    numZoomLevels:1, 
+    maxResolution:1,
+    units:'m', 
+    projection: "EPSG:900913",
+    displayProjection: new OpenLayers.Projection("EPSG:4326")
+  });
+
+//  var ol_wms = new OpenLayers.Layer.WMS( "OpenLayers WMS", "http://labs.metacarta.com/wms/vmap0", {layers: 'basic'} );
+
+//  var os_map = new OpenLayers.Layer.TMS("OpenSim", "http://www.radioice.co.uk/opensimwebint/includes/", { 'type':'png', 'getURL':get_my_url });
+  var os_map = new OpenLayers.Layer.XYZ("OpenSim", "http://www.radioice.co.uk/opensimwebint/includes/", { 'type':'png', 'getURL':get_my_url });
+
+  map.addLayers([os_map]);
+  map.addControl(new OpenLayers.Control.PanZoomBar());
+  map.addControl(new OpenLayers.Control.MouseToolbar());
+
+//  if (!map.getCenter()) map.zoomToMaxExtent();
+  if( ! map.getCenter() ){
+    var lonLat = new OpenLayers.LonLat(100, 100).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
+    map.setCenter (lonLat, 1);
+  }
+
+  
+</script>
+

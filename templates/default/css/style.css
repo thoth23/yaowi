@@ -1,0 +1,183 @@
+aa:active { text-decoration: none; color: #0077dd}
+aa:link { text-decoration: none; color: #0077dd}
+aa:visited { text-decoration: none; color: #0077dd}
+aa:hover { text-decoration: underline; color: #888888}
+
+a:active { text-decoration: none; color: #ccccff}
+a:link { text-decoration: none; color: #ccccff}
+a:visited { text-decoration: none; color: #ccccff}
+a:hover { text-decoration: underline; color: #888888}
+
+BODY { 
+  background-color: rgb(0, 0, 0);
+  color : rgb(255, 255, 255);
+  font-weight: normal;
+  font-style : normal;
+  font-size : 10pt;
+  font-family : Arial,Tahoma;
+  height: 99%;
+  width: 99%;
+}
+
+#main {
+  width: 765px;
+  padding: 20px 0px 20px 0px;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: solid 1px #ffffff;
+}
+
+#topMnu {
+  width: 765px;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: solid 1px #ffffff;
+}
+
+#topMnuTbl {
+  width: 100%;
+}
+
+#topMnuTblStatus {
+  width: 180px;
+  vertical-align: top;
+  border-left: solid 1px #666666;
+  border-right: solid 1px #666666;
+}
+
+#tblStatus {
+  width: 100%;
+  font-weight: bold;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+  padding: 0px 5px 0px 5px;
+  text-align: right;
+}
+
+.ONLINE {
+  color: #00ff00;
+  font-weight: bold;
+}
+
+.OFFLINE {
+  color: #ff0000;
+  font-weight: bold;
+}
+
+#loginBox {
+  font-weight: bold;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+}
+
+INPUT[type=text], INPUT[type=password] {
+  font-weight: bold;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+  border: solid 1px #aaaaaa;
+  background: #444444;  
+  color: #ffffff;
+}
+
+INPUT[type=submit] {
+  font-weight: bold;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+  color: #ffffff;
+  border: solid 1px #555555;
+  background: #aaaaaa;
+}
+
+
+div.autocomplete {
+  font-weight: bold;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+  margin:0px;  
+  padding:0px;  
+  width:250px;
+  background:#444444;
+  border:1px solid #cccccc;
+  position:absolute;
+}
+
+div.autocomplete ul {
+  margin:0px;
+  padding:0px;
+  list-style-type:none;
+}
+
+div.autocomplete ul li.selected { 
+  background-color:#888888;
+}
+
+div.autocomplete ul li {
+  margin:0;
+  padding:2px;
+  height:20px;
+  display:block;
+  list-style-type:none;
+  cursor:pointer;
+}
+
+.regionList {
+  border: solid 1px #999999;
+}
+
+.regionListTR {
+  background: #660000;
+}
+
+.regionListTD {
+  border-bottom: solid 1px #ffffff;
+  padding: 5px 1px 5px 1px;
+}
+
+#copyright {
+  width: 765px;
+  padding: 5px 0px 5px 0px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-weight: normal;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+}
+
+#langBar {
+  text-align: center;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+}
+
+#logonStatus {
+  text-align: center;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+  width: 180px;
+}
+
+#languageBar {
+  margin-left: auto;
+  margin-right: auto;
+  align: center;
+  background: #666666;
+  border: solid 1px #888888;
+}
+
+#map {
+  height: 500px;
+  width: 765px;
+  border: solid 1px #ffffff;
+}
+
+#userList {
+  height: 300px;;
+  overflow: auto;
+}
