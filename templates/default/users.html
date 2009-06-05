@@ -2,8 +2,9 @@
     <input type="hidden" name="page" value="users">
     <table>
       <tr>
-	<td><a href="?page=users&online=1"><?php echo $session->lang['LI_ONLINE_USERS']; ?></a> | <a href="?page=users&online=0"><?php echo $session->lang['LI_ALL_USERS']; ?></a></td>
+	<td><a href="?page=users&online=1"><?php echo $session->lang['LI_ONLINE_USERS']; ?></a></td><td>|</td><td><a href="?page=users&online=0"><?php echo $session->lang['LI_ALL_USERS']; ?></a></td>
 	<td>|</td>
+	<?php if ($session->logged_in) { echo "<td><a href='?page=users&friends=1'>" . $session->lang['LI_FRIENDS'] . "</a></td><td>|</td>"; } ?>
 	<td>Search:</td><td><input type="text" id="regionSearch" name="search" autocomplete="off"></td><td><input type="submit" value="Search"></td>
       </tr>
     </table>
@@ -28,6 +29,9 @@
 	if (!is_null($_REQUEST['online']) && $_REQUEST['online']==0) {
   	    $users = $osInfo->getFullUserList();
             echo $session->lang['LI_ALL_USERS'];
+	} elseif (!is_null($_REQUEST['friends']) && $_REQUEST['friends']==1 && $session->logged_in) {
+  	    $users = $osInfo->getFriendsList($session->uuid);
+            echo $session->lang['LI_FRIENDS'];
 	} elseif (!is_null($_REQUEST['search'])) {
   	    $users = $osInfo->getFullUserList($_REQUEST['search']);
             echo  $session->lang['GEN_SEARCH'] . ": " . $_REQUEST['search'] . " [<a href='?page=users'>Clear</a>]";
@@ -46,8 +50,10 @@
     <?php
       if (is_null($users)) {
 	echo "<tr><td colspan=3>";
-	if (!is_null($_REQUEST['search']) && $_REQUEST['search'] != "") 	
+	if (!is_null($_REQUEST['search']) && $_REQUEST['search'] != "")
 	  echo $session->lang['WHO_NO_RESULTS'];
+	elseif (!is_null($_REQUEST['friends']) && $_REQUEST['friends'] == 1)
+	  echo $session->lang['FRIENDS_NO_FRIENDS'];
 	else
 	  echo $session->lang['WHO_NONE_ONLINE'];
 	echo "</td></tr>";
@@ -59,7 +65,11 @@
 	      $style=" style='background: #333333;'";
   	    else 
 	      $style=" 'background: #000000;'";
-	    echo "\t<tr$style><td><a href='?page=profile&user=" . $user["UUID"] . "'>" . $user["username"] . " " . $user["lastname"] .  "</a></td><td>" . $user["regionName"] . "</td><td>" . date($session->lang['WHO_TIME_FORMAT'],$user["loginTime"]) . "</td></tr>\n";
+	    echo "\t<tr$style><td><a href='?page=profile&user=" . $user["UUID"] . "'>" . $user["username"] . " " . $user["lastname"] .  "</a></td><td>" . $user["regionName"] . "</td>";
+	    if ($user["agentOnline"])
+		echo "<td>" . date($session->lang['WHO_TIME_FORMAT'],$user["loginTime"]) . "</td></tr>\n";
+	    else
+		echo "<td>" .$session->lang['GEN_OFFLINE'] . "</td></tr>\n";
 	  }
 	}
 

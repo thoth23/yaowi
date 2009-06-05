@@ -138,6 +138,29 @@ class OpenSim
     mysql_close();
   }
 
+  function getFriendsList($uuid) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $query = "SELECT userfriends.*, agents.*, users.username, users.lastname, regions.regionName FROM userfriends LEFT JOIN agents ON friendID = agents.UUID LEFT JOIN users ON agents.UUID = users.UUID LEFT JOIN regions ON agents.currentRegion = regions.uuid WHERE userfriends.ownerID ='" . $this->cleanQuery($uuid) . "' ORDER BY agents.agentOnline";
+    if ($result = mysql_query($query)) {
+      if (mysql_numrows($result)) {
+        while($row=mysql_fetch_assoc($result)) {
+          $array[] = $row;
+        }
+      }
+    }
+
+    return $array;
+
+    // Close the database
+    mysql_close();
+  }
+
+
   function getFullUserList($search="", $start=0, $end=0) {
     require("settings.php");
 

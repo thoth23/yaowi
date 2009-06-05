@@ -36,6 +36,7 @@ Class Session {
 	    $this->login_message = $loginCheck[1];
 	    if ($loginCheck[0]) {	    
   	        $this->setVars($fname, $lname);
+		header("location: index.php?page=" . $_REQUEST['page']);
 	    }
 	} else if (!is_null($_SESSION['fname']) && !is_null($_SESSION['lname'])) {
 	    $this->setVars($_SESSION['fname'], $_SESSION['lname']);
@@ -49,6 +50,7 @@ Class Session {
 
 	$_SESSION['fname'] = NULL;
 	$_SESSION['lname'] = NULL;
+	header("location: index.php?page=" . $_REQUEST['page']);
     }
   }
 
