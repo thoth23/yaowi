@@ -70,6 +70,12 @@ BODY {
   font-style : normal;
   font-size : 8pt;
   font-family : Arial,Tahoma;
+  border: solid 1px #555555;
+  background: #111111;
+  width: 200px;
+  position: absolute;
+  top: 50px;
+  display: none;
 }
 
 INPUT[type=text], INPUT[type=password] {

@@ -1,1 +1,21 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $TEMPLATE_PATH; ?>/css/style.css">
+
+<script type="text/javascript">
+
+function showLogon() {
+  var foo = $('logonStatus');
+  var left = 0;
+  while (foo) {
+    left += foo.offsetLeft;
+    foo = foo.offsetParent;
+  }
+
+  $('loginBox').style.left = (left-20) + "px";
+  $('loginBox').style.display = "block";
+}
+
+function closeLogon() {
+  $('loginBox').style.display
+}
+
+</script>
