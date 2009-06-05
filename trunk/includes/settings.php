@@ -29,6 +29,9 @@ $Y_DB_NAME	= "yaowi";
 $Y_DB_USER	= "yaowi";
 $Y_DB_PASS	= "yaowi";
 
+// Default language - must be installed as a language pack
+$BASE_LANGUAGE	= "en";
+
 // Please leave the copyright intact for licence purposes
 $COPYRIGHT = "Powered by <a href=\"http://www.radioice.co.uk/yaowi\">Yaowi</a> - Copyright &copy; 2009 - Jay Eames / $SITE_TITLE";
 

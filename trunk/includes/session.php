@@ -1,7 +1,6 @@
 <?php
 include("language.php");
 
-
 Class Session {
 
   public $lang = array();
@@ -14,6 +13,7 @@ Class Session {
   public $login_message;
 
   function __construct($fname = NULL, $lname = NULL, $password = NULL, $logoff = false) {
+    require("settings.php");
     $this->lClass = new Language();
     session_start();
     if (!is_null($_REQUEST['lang'])) {
@@ -23,9 +23,9 @@ Class Session {
     elseif (!is_null($_SESSION['lang']))
       $this->lang = $this->lClass->getLanguageDef($_SESSION['lang']);
     else {
-      // Default to english
-      $_SESSION['lang'] = "en";
-      $this->lang = $this->lClass->getLanguageDef('en');
+      // If all else fails, default to language in settings
+      $_SESSION['lang'] = $BASE_LANGUAGE;
+      $this->lang = $this->lClass->getLanguageDef($BASE_LANGUAGE);
     }
 
     if (!$logoff) {
