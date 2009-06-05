@@ -5,9 +5,9 @@
       <td id='logonStatus'>
 	<?php 
 	  if ($session->logged_in) 
-	    echo $session->lang['GEN_WELCOME'] . " " . $session->username . "<br>[<a href='?page=myaccount'>" . $session->lang['GEN_MY_ACCOUNT'] . "</a> | <a href='?action=logoff&page=" . $_REQUEST['page'] . "'>" . $session->lang['GEN_LOGOFF'] . "</a>]" ; 
+	    echo $session->lang['GEN_WELCOME'] . " " . $session->username . "<br>[<a href='?page=myaccount'>" . $session->lang['GEN_MY_ACCOUNT'] . "</a> | <a href='?action=logoff&page=" . $_REQUEST['page'] . "'>" . $session->lang['GEN_LOGOFF'] . "</a>]"; 
 	  else 
-	    echo $session->lang['GEN_WELCOME'] . " " .  $session->lang['GEN_GUEST'] . "<br>[<a href='?page=logon'>" . $session->lang['GEN_LOGON'] . "</a> | <a href='?page=create'>" . $session->lang['GEN_CREATE_ACCOUNT'] . "</a>]"; 
+	    echo $session->lang['GEN_WELCOME'] . " " .  $session->lang['GEN_GUEST'] . "<br>[<a href='#' onClick=\"showLogon(); return false;\">" . $session->lang['GEN_LOGON'] . "</a> | <a href='?page=create'>" . $session->lang['GEN_CREATE_ACCOUNT'] . "</a>]"; 
 	?></td>
     </tr>
     <tr>

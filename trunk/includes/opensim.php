@@ -51,7 +51,7 @@ class OpenSim
     mysql_close();
   }
 
-  function getRegionList($search="", $start=0, $end=0) {
+  function getRegionList($search="", $start=0, $end=0, $owner=NULL) {
     require("settings.php");
 
     // Open the Database
@@ -59,7 +59,14 @@ class OpenSim
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = "SELECT regions.*, users.username, users.lastname FROM regions LEFT JOIN users ON regions.owner_uuid = users.UUID";
-    if (!is_null($search) && $search != "") $query .= $this->cleanQuery(" WHERE regions.regionName LIKE '$search'");
+    if (!is_null($search) && $search != "") $query .= " WHERE regions.regionName LIKE '" . $this->cleanQuery($search) . "'";
+    if (!is_null($owner) && $owner!="") {
+	if (strpos($query, "WHERE") === false)
+	    $query .= " WHERE";
+	else
+	    $query .= " AND";
+	$query .= " regions.owner_uuid = '" . $this->cleanQuery($owner) . "'";
+    }
     $query .= " ORDER BY regionName";
 
     if ($start || $end)	$query .= $this->cleanQuery(" LIMIT $start, $end");
@@ -202,6 +209,7 @@ class OpenSim
       $string = mysql_real_escape_string($string);
     else
       $string = mysql_escape_string($string);
+
     return $string;
   }
 

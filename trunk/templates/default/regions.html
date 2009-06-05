@@ -2,8 +2,16 @@
     <input type="hidden" name="page" value="regions">
     <table>
       <tr>
+<?php
+    if ($session->logged_in) {
+        $myRegions = $osInfo->getRegionList("",0,0,$session->uuid);
+	if (!empty($myRegions) && !is_null($myRegions))
+	    echo "<td><a href='?page=regions&type=mine'>" . $session->lang['REGION_MY_REGIONS'] . "</a></td><td>|</td>";	
+    }
+?>
 	<td><?php echo $session->lang['GEN_SEARCH']; ?></td>
-	<td><input type="text" id="regionSearch" name="search" autocomplete="off"></td><td><input type="submit" value="<?php echo $session->lang['GEN_SEARCH']; ?>"></td></tr>
+	<td><input type="text" id="regionSearch" name="search" autocomplete="off"></td><td><input type="submit" value="<?php echo $session->lang['GEN_SEARCH']; ?>"></td>
+    </tr>
     </table>
     </form>
     <div class="autocomplete" id="regionList" style="display:none"></div>
@@ -22,7 +30,14 @@
                         });
     </script>
     <br><br>
-    <?php if (!is_null($_REQUEST['search']) && $_REQUEST['search'] != "") echo $session->lang['GEN_SEARCH'] . ": " . $_REQUEST['search'] . " [<a href='?page=regions'>Clear</a>]"; ?>
+    <?php 
+	if (!is_null($_REQUEST['search']) && $_REQUEST['search'] != "") 
+	    echo $session->lang['GEN_SEARCH'] . ": " . $_REQUEST['search'] . " [<a href='?page=regions'>Clear</a>]"; 
+	elseif (!is_null($_REQUEST['type']) && $_REQUEST['type'] == "mine")
+	    echo $session->lang['GEN_SEARCH'] . ": " . $session->lang['REGION_MY_REGIONS'] . " [<a href='?page=regions'>Clear</a>]";
+	else
+	    echo $session->lang['LI_REGIONS'];
+    ?><br><br>
     <table width=100% cellspacing=0 class='regionList'>
       <tr class='regionListTR'>
 	<td class='regionListTD'><a href='#'><?php echo $session->lang['REGION_NAME']; ?></a></td>
@@ -32,7 +47,10 @@
       </tr>
     <?php
       $rC = 0;
-      $regions = $osInfo->getRegionList($_REQUEST['search']);
+      if (!is_null($_REQUEST['type']) && $_REQUEST['type'] == "mine")
+	$regions = $myRegions;
+      else
+        $regions = $osInfo->getRegionList($_REQUEST['search']);
 
       if (!is_null($regions)) {
         foreach ($regions as $reg) {
