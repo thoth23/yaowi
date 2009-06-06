@@ -18,4 +18,28 @@ function closeLogon() {
   $('loginBox').style.display
 }
 
+function updateRGen() {
+  var randUUID = "<?php echo $osInfo->createUUID(); ?>";
+  var out ='<Root>\n';
+  out += '  <Config sim_UUID="' + randUUID + '" sim_name="' + document.regionGen.regionName.value;
+  out += '" sim_location_x="' + document.regionGen.regionLocX.value;
+  out += '" sim_location_y="' + document.regionGen.regionLocY.value;
+  out += '" internal_ip_address="' + document.regionGen.regionIntIP.value;
+  out += '" internal_ip_port="' + document.regionGen.regionIntPort.value;
+  out += '" allow_alternate_ports="' + !document.regionGen.regionAllowAltPort.checked;
+  out += '" external_host_name="' + document.regionGen.regionExtIP.value;
+  out += '" master_avatar_first="' + document.regionGen.regionMasterFName.value;
+  out += '" master_avatar_last="' + document.regionGen.regionMasterLName.value;
+  out += '" master_avatar_pass="' + document.regionGen.regionMasterPWord.value;
+  out += '" lastmap_uuid="" lastmap_refresh=""';
+  out += ' nonphysical_prim_max="' +  + document.regionGen.regionMaxNonPhys.value;
+  out += '" physical_prim_max="' + document.regionGen.regionMaxPhys.value;
+  out += '" clamp_prim_size="' + !document.regionGen.regionPrimClamp.checked;
+  out += '" object_capacity="' + document.regionGen.regionObjCapacity.value;
+  out += '" master_avatar_uuid="' + document.regionGen.regionMasterUUID.value;
+  out += '" />\n';
+  out += '</Root>';
+  document.rGen.rGenOutput.value = out;
+}
+
 </script>

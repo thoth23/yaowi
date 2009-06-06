@@ -98,6 +98,11 @@ INPUT[type=submit] {
   background: #aaaaaa;
 }
 
+TEXTAREA {
+  border: solid 1px #444444;
+  background: #333333;
+  color: #999999;
+}
 
 div.autocomplete {
   font-weight: bold;
@@ -226,4 +231,10 @@ div.autocomplete ul li {
 
 .Offline {
   color: #ea0202;
+}
+
+#rGenOutput {
+  margin-top: 20px;
+  width: 100%;
+  height: 150px;
 }

@@ -18,6 +18,7 @@ class OpenSim
   public $region_count;
   public $online_count;
   public $unique_count;
+  public $null_key = "00000000-0000-0000-0000-000000000000";
 
   function __construct() {
     require("settings.php");
@@ -244,6 +245,18 @@ class OpenSim
     return $string;
   }
 
+  public function createUUID($prefix = '')
+
+  {
+    $chars = md5(uniqid(mt_rand(), true));
+    $uuid  = substr($chars,0,8) . '-';
+    $uuid .= substr($chars,8,4) . '-';
+    $uuid .= substr($chars,12,4) . '-';
+    $uuid .= substr($chars,16,4) . '-';
+    $uuid .= substr($chars,20,12);
+    return $prefix . $uuid;
+
+  }
   
 }
 
