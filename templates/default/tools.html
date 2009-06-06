@@ -1,13 +1,23 @@
+<div id='subTool'>
 <?php
 
-echo "<a href=\"?page=tools&sub=rgen\">" . $session->lang['T_RGEN_GEN_NAME'] . "</a> | ";
+echo "<a href=\"?page=tools&sub=uuidgen\">" . $session->lang['T_UUIDGEN_NAME'] . "</a> | ";
+echo "<a href=\"?page=tools&sub=rgen\">" . $session->lang['T_RGEN_GEN_NAME'] . "</a>";
 
 ?>
-
-<hr>
+</div>
+<br>
 <div id="tool">
 <?php
-if (is_null($_REQUEST['sub']) || $_REQUEST['sub'] == "" || $_REQUEST['sub'] == "rgen") {
+if (is_null($_REQUEST['sub']) || $_REQUEST['sub'] == "" || $_REQUEST['sub'] == "uuidgen") {
+
+// UUID Generator
+  echo $session->lang['T_UUIDGEN_NAME'];
+
+  echo "<br><br><input type='text' value='" . $osInfo->createUUID() . "' size=40>&nbsp; [<a href='?page=tools&sub=uuidgen'>" . $session->lang['T_UUIDGEN_REGENERATE'] . "</a>]";
+
+
+} elseif ($_REQUEST['sub'] == "rgen") {
 
 //Region Generator:
   echo $session->lang['T_RGEN_GEN_NAME'] . "<br><br>\n";

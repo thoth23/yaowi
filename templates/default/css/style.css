@@ -238,3 +238,8 @@ div.autocomplete ul li {
   width: 100%;
   height: 150px;
 }
+
+#subTool {
+  padding-bottom: 10px;
+  border-bottom: solid 1px #555555;
+}
