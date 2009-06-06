@@ -35,7 +35,7 @@ Class Session {
       }
       
     } else {
-      this->userCountry = $_SESSION['country'];
+      $this->userCountry = $_SESSION['country'];
     }
 
     if (!is_null($_REQUEST['lang'])) {
