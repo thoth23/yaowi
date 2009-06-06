@@ -1,6 +1,15 @@
+<div id="gridStatusBox">
+  <table id="gridStatusTable" cellspacing=0 cellpadding=3>
+    <?php 
+	echo "<tr><td class='gridStatus'>" . $session->lang['ST_GRID_STATUS'] . ":</td><td align=right class='gridStatus " . $osInfo->gridStatusClass() . "'>" . $session->lang[$osInfo->gridStatus()] . "</td></tr>";
+    	echo "<tr class='rowHL'><td>" . $session->lang['ST_USERS_TOTAL'] . ":</td><td align=right>" . $osInfo->user_count . "</td></tr>";
+    	echo "<tr><td>" . $session->lang['ST_REGIONS_TOTAL'] . ":</td><td align=right>" . $osInfo->region_count . "</td></tr>";
+    	echo "<tr class='rowHL'><td>" . $session->lang['ST_UNIQUE_VISITORS'] . ":</td><td align=right>" . $osInfo->unique_count . "</td></tr>";
+    	echo "<tr><td><b>" . $session->lang['ST_USERS_ONLINE'] . ":</b></td><td align=right><b>" . $osInfo->online_count . "</b></td></tr>";
+    ?>
+  </table>
+</div>
 
-    <?php echo $session->lang['ST_USERS_ONLINE']; ?>: <?php echo $osInfo->online_count; ?><br>
-    <?php echo $session->lang['ST_USERS_TOTAL']; ?>: <?php echo $osInfo->user_count; ?><br>
-    <?php echo $session->lang['ST_REGIONS_TOTAL']; ?>: <?php echo $osInfo->region_count; ?><br>
-    <?php echo $session->lang['ST_UNIQUE_VISITORS']; ?>: <?php echo $osInfo->unique_count; ?><br><br>
+<div id="gridStatusNews">
 
+</div>
