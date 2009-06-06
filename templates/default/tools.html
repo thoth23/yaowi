@@ -1,0 +1,48 @@
+<?php
+
+echo "<a href=\"?page=tools&sub=rgen\">" . $session->lang['T_RGEN_GEN_NAME'] . "</a> | ";
+
+?>
+
+<hr>
+<div id="tool">
+<?php
+if (is_null($_REQUEST['sub']) || $_REQUEST['sub'] == "" || $_REQUEST['sub'] == "rgen") {
+
+//Region Generator:
+  echo $session->lang['T_RGEN_GEN_NAME'] . "<br><br>\n";
+  echo "  
+  <form name='regionGen' onKeyUp='updateRGen();' onMouseDown='updateRGen();'>
+    <table>
+      <tr><td>" . $session->lang['T_RGEN_NAME'] . "</td><td><input type='text' name='regionName' value='My First Sim'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_LOCATION'] . " (X)</td><td><input type='text' name='regionLocX' size=5 value='1000'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_LOCATION'] . " (Y)</td><td><input type='text' name='regionLocY' size=5 value='1000'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_MASTER_UUID'] . "</td><td><input type='text' name='regionMasterUUID' value='" . ($session->logged_in ? $session->uuid : $osInfo->null_key) . "' size=40></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_MASTER_FIRST'] . "</td><td><input type='text' name='regionMasterFName' value='Test'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_MASTER_LAST'] . "</td><td><input type='text' name='regionMasterLName' value='Avatar'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_MASTER_PWORD'] . "</td><td><input type='text' name='regionMasterPWord' value='Test'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_INT_IP'] . "</td><td><input type='text' name='regionIntIP' value='127.0.0.1'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_INT_PORT'] . "</td><td><input type='text' name='regionIntPort' size=4 value='9000'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_EXT_IP'] . "</td><td><input type='text' name='regionExtIP' value='0.0.0.0'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_ALLOW_ALT_PORT'] . "</td><td><input type='checkbox' name='regionAllowAltPort'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_NONPHYS_MAX'] . "</td><td><input type='text' name='regionMaxNonPhys' value=0 size=4></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_PHYS_MAX'] . "</td><td><input type='text' name='regionMaxPhys' value=0 size=4></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_PRIM_CLAMP'] . "</td><td><input type='checkbox' name='regionPrimClamp'></td></tr>
+      <tr><td>" . $session->lang['T_RGEN_OBJ_CAPACITY'] . "</td><td><input type='text' name='regionObjCapacity' value=0 size=4></td></tr>
+    </table>
+  </form>";
+
+?>
+<form name='rGen'>
+<textarea id='rGenOutput' name='rGenOutput'>
+<Root>
+  <Config sim_UUID="<?php echo $osInfo->createUUID(); ?>" sim_name="My First Sim" sim_location_x="1000" sim_location_y="1000" internal_ip_address="127.0.0.1" internal_ip_port="9000" allow_alternate_ports="true" external_host_name="0.0.0.0" master_avatar_first="Test" master_avatar_last="Avatar" master_avatar_pass="Test" lastmap_uuid="" lastmap_refresh="" nonphysical_prim_max="0" physical_prim_max="0" clamp_prim_size="true" object_capacity="0" master_avatar_uuid="<?php echo ($session->logged_in ? $session->uuid : $osInfo->null_key) ?>" />
+</Root>
+</textarea>
+</form>
+<?php
+}
+?>
+
+
+</div>
