@@ -12,8 +12,7 @@
 // General settings for the system
 $SITE_TITLE	= "OpenSimulator";
 $TEMPLATE_PATH	= "templates/default/";
-$STATUS 	= "ONLINE";
-$SYSURL 	= "http://www.radioice.co.uk/yaowi";
+$SYSURL 	= "http://www.mysite.com/yaowi";
 $SYSMAIL 	= "your@email.com";
 
 
@@ -21,7 +20,7 @@ $SYSMAIL 	= "your@email.com";
 $DB_HOST 	= "localhost";
 $DB_NAME 	= "opensim";
 $DB_USER 	= "opensim";
-$DB_PASS 	= "l3tm31n";
+$DB_PASS 	= "mysecret";
 
 // Settings for the Yaowi database (MySQL only at the moment)
 $Y_DB_HOST 	= "localhost";
