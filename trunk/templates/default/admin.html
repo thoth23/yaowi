@@ -1,0 +1,9 @@
+    <?php 
+	if (!$session->logged_in) {
+	    echo $session->lang['ADMIN_NOT_LOGGED_IN'];
+	} elseif ($session->userlevel < 2) {
+	    echo $session->lang['ADMIN_NOT_AUTHORISED'];
+	} else {
+	    echo "Plink!";
+	}
+    ?>

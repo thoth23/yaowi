@@ -4,10 +4,14 @@
       <td id='topMnuTblLogo'><img src='<?php echo $TEMPLATE_PATH; ?>/images/oswi_logo.png' alt='OpenSimulator'></td>
       <td id='logonStatus'>
 	<?php 
-	  if ($session->logged_in) 
-	    echo $session->lang['GEN_WELCOME'] . " " . $session->username . "<br>[<a href='?page=myaccount'>" . $session->lang['GEN_MY_ACCOUNT'] . "</a> | <a href='?action=logoff&page=" . $_REQUEST['page'] . "'>" . $session->lang['GEN_LOGOFF'] . "</a>]"; 
-	  else 
+	  if ($session->logged_in) {
+	    echo $session->lang['GEN_WELCOME'] . " " . $session->username . "<br>[<a href='?page=myaccount'>" . $session->lang['GEN_MY_ACCOUNT'] . "</a> | <a href='?action=logoff&page=" . $_REQUEST['page'] . "'>" . $session->lang['GEN_LOGOFF'] . "</a>"; 
+	    if ($session->userlevel == 5)
+	      echo " | <a href='?page=admin'>" . $session->lang['GEN_ADMIN'] . "</a>";
+	    echo "]"; 
+	  } else {
 	    echo $session->lang['GEN_WELCOME'] . " " .  $session->lang['GEN_GUEST'] . "<br>[<a href='#' onClick=\"showLogon(); return false;\">" . $session->lang['GEN_LOGON'] . "</a> | <a href='?page=create'>" . $session->lang['GEN_CREATE_ACCOUNT'] . "</a>]"; 
+	  }
 	?></td>
     </tr>
     <tr>
@@ -18,6 +22,7 @@
 	<a href="?page=users"><?php echo $session->lang['LI_USERS']; ?></a> | 
 	<a href="?page=regions"><?php echo $session->lang['LI_REGIONS']; ?></a> | 
 	<a href="?page=map"><?php echo $session->lang['LI_MAP']; ?></a> | 
+	<a href="?page=tools"><?php echo $session->lang['LI_TOOLS']; ?></a> | 
 	<a href="?page=faq"><?php echo $session->lang['LI_FAQ']; ?></a> | 
 	<a href="?page=opensim"><?php echo $session->lang['LI_OPENSIM']; ?></a>
       </td>
