@@ -11,6 +11,8 @@ Class Session {
   public $uuid;
   public $logged_in = false;
   public $login_message;
+  public $userlevel;
+
 
   function __construct($fname = NULL, $lname = NULL, $password = NULL, $logoff = false) {
     require("settings.php");
