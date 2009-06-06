@@ -12,12 +12,32 @@ Class Session {
   public $logged_in = false;
   public $login_message;
   public $userlevel;
+  public $userIP;
+  public $userCountry;
 
 
   function __construct($fname = NULL, $lname = NULL, $password = NULL, $logoff = false) {
     require("settings.php");
     $this->lClass = new Language();
     session_start();
+
+    $this->userIP=$_SERVER['REMOTE_ADDR'];
+
+    if (!isset($_SESSION['country'])) {
+      $ccHandle = @fopen("http://api.hostip.info/country.php?ip=" . $this->userIP, 'r');
+      if ($ccHandle) {
+	$cCode = fread($ccHandle, 1024);
+        fclose($ccHandle);
+      }
+      if (strlen($cCode)==2) {
+	$this->userCountry = strtolower($cCode);
+	$_SESSION['country'] = strtolower($cCode);
+      }
+      
+    } else {
+      this->userCountry = $_SESSION['country'];
+    }
+
     if (!is_null($_REQUEST['lang'])) {
       $this->lang = $this->lClass->getLanguageDef($_REQUEST['lang']);
       $_SESSION['lang'] = $_REQUEST['lang'];
@@ -25,9 +45,26 @@ Class Session {
     elseif (!is_null($_SESSION['lang']))
       $this->lang = $this->lClass->getLanguageDef($_SESSION['lang']);
     else {
-      // If all else fails, default to language in settings
-      $_SESSION['lang'] = $BASE_LANGUAGE;
-      $this->lang = $this->lClass->getLanguageDef($BASE_LANGUAGE);
+
+      // Are we doing the auto language?
+
+      if ($AUTO_LANGUAGE && !is_null($this->userCountry)) {
+        // Do we have the language?
+        $langs = $this->lClass->getLanguages();
+	if (in_array($this->userCountry, $langs)) {
+	  // We have the language
+          $_SESSION['lang'] = $this->userCountry;
+          $this->lang = $this->lClass->getLanguageDef($this->userCountry);
+	} else {
+          // If all else fails, default to language in settings
+          $_SESSION['lang'] = $BASE_LANGUAGE;
+          $this->lang = $this->lClass->getLanguageDef($BASE_LANGUAGE);
+	}
+      } else {
+        // If all else fails, default to language in settings
+        $_SESSION['lang'] = $BASE_LANGUAGE;
+        $this->lang = $this->lClass->getLanguageDef($BASE_LANGUAGE);
+      }
     }
 
     if (!$logoff) {

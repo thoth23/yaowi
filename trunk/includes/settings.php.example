@@ -31,6 +31,12 @@ $Y_DB_PASS	= "yaowi";
 // Default language - must be installed as a language pack
 $BASE_LANGUAGE	= "en";
 
+// Auto language stuff
+
+// Do we try and automatically match the language to the IP address?
+// This is experimental, and needs the appropriate language packs installed to work
+$AUTO_LANGUAGE  = true;
+
 // Please leave the copyright intact for licence purposes
 $COPYRIGHT = "Powered by <a href=\"http://www.radioice.co.uk/yaowi\">Yaowi</a> - Copyright &copy; 2009 - Jay Eames / $SITE_TITLE";
 
