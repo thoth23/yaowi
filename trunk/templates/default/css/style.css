@@ -1,4 +1,4 @@
-aa:active { text-decoration: none; color: #0077dd}
+`aa:active { text-decoration: none; color: #0077dd}
 aa:link { text-decoration: none; color: #0077dd}
 aa:visited { text-decoration: none; color: #0077dd}
 aa:hover { text-decoration: underline; color: #888888}
@@ -186,4 +186,44 @@ div.autocomplete ul li {
 #userList {
   height: 300px;;
   overflow: auto;
+}
+
+#gridStatusBox {
+  width: 300px;
+  height: 120px;
+  float: right;
+  background: #000000;
+  background-image: url("../images/loginBoxCorners.png");
+  color: #cccccc;
+}
+
+#gridStatusNews {
+  width: 450px;
+  min-height: 120px;
+}
+
+#gridStatusTable {
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.gridStatus {
+  border-bottom: dotted 1px #999999;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.rowHL {
+  background: #222222;
+}
+
+.Online {
+  color: #12d212;
+}
+
+.Offline {
+  color: #ea0202;
 }

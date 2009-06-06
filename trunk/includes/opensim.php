@@ -223,6 +223,14 @@ class OpenSim
     $timeout = 2;
     return @fsockopen("$address", $port, $errno, $errstr, $timeout);
   }
+ 
+  public function gridStatusClass() {
+    return "Online";
+  }
+
+  public function gridStatus() {
+    return "ST_GRID_ONLINE";
+  }
 
   public function cleanQuery($string)
   {
