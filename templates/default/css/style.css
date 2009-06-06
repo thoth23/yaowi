@@ -98,6 +98,12 @@ INPUT[type=submit] {
   background: #aaaaaa;
 }
 
+INPUT[type=button] {
+  color: #ffffff;
+  border: solid 1px #555555;
+  background: #aaaaaa;
+}
+
 TEXTAREA {
   border: solid 1px #444444;
   background: #333333;

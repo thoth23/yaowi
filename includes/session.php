@@ -1,5 +1,5 @@
 <?php
-include("language.php");
+require("language.php");
 
 Class Session {
 
@@ -42,9 +42,9 @@ Class Session {
       $this->lang = $this->lClass->getLanguageDef($_REQUEST['lang']);
       $_SESSION['lang'] = $_REQUEST['lang'];
     }
-    elseif (!is_null($_SESSION['lang']))
+    elseif (!is_null($_SESSION['lang'])) {
       $this->lang = $this->lClass->getLanguageDef($_SESSION['lang']);
-    else {
+    } else {
 
       // Are we doing the auto language?
 

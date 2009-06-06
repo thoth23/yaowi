@@ -40,6 +40,9 @@ function updateRGen() {
   out += '" />\n';
   out += '</Root>';
   document.rGen.rGenOutput.value = out;
+
+  new Ajax.Updater('locCheck', '<?php echo $SYSURL; ?>includes/checkLocation.php?x=' + document.regionGen.regionLocX.value + '&y=' + document.regionGen.regionLocY.value);
+
 }
 
 </script>
