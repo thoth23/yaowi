@@ -209,11 +209,29 @@ class OpenSim
     mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
-    $query = $this->cleanQuery("SELECT * FROM users WHERE UUID='$uuid'");
+    $query = "SELECT * FROM users WHERE UUID='" . $this->cleanQuery($uuid) . "'";
     $result = mysql_query($query) or die (mysql_error());
 
     if ($result) {
       return mysql_result($result,0,"username") . " " . mysql_result($result,0,"lastname");
+    }
+
+    // Close the database
+    mysql_close(); 
+  }
+
+  function checkLocation($x, $y) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $query = "SELECT * FROM regions WHERE locX ='" . $this->cleanQuery($x) . "' AND locY = '" . $this->cleanQuery($y) . "'";
+    $result = mysql_query($query) or die (mysql_error());
+
+    if ($result) {
+      return mysql_numrows($result);
     }
 
     // Close the database

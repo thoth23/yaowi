@@ -64,6 +64,9 @@ Class Language
         $path = getcwd() . "/language/$l/lang.cfg";
 	$lang = array();
 
+	// Ugly hack to get round location problems
+	$path = str_replace("includes/", "", $path);
+
         if (file_exists($path)) {
 	    include($path);
 	}
