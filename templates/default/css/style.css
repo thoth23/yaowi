@@ -249,3 +249,71 @@ div.autocomplete ul li {
   padding-bottom: 10px;
   border-bottom: solid 1px #555555;
 }
+
+/* Wiki stuff */
+
+#wikiLinks {
+  width: 100px;
+}
+
+#wikiTopLinks {
+  font-weight: normal;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
+}
+
+#wikiSpacer {
+  width: 10px;
+}
+
+#wiki h1, h2 {
+  border-bottom: solid 1px #ffffff;
+}
+
+#toc {
+  background: #444444;
+  padding: 10px;
+  border: solid 1px #666666;
+  margin-top: 20px;
+}
+
+#tocTitle h2 {
+  font-size: 12px;
+  padding: 0px;
+  margin: 0px;
+  margin-bottom: 10px;
+  text-align: center;
+  border: 0px;
+}
+
+#toc li {
+  list-style-type: none;
+  margin: 0px;
+  text-indent: -30px;
+}
+
+#toc ul {
+  margin: 2px;
+}
+
+#toc ul.toclevel-2 {
+  margin-left: 15px;
+}
+
+#toc ul.toclevel-3 {
+  margin-left: 30px;
+}
+
+#toc ul.toclevel-4 {
+  margin-left: 45px;
+}
+
+#toc ul.toclevel-5 {
+  margin-left: 60px;
+}
+
+#toc ul.toclevel-6 {
+  margin-left: 75px;
+}
+
