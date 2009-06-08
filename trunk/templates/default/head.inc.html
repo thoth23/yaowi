@@ -3,20 +3,20 @@
 <script type="text/javascript">
 
 function showLogon() {
-  var foo = $('logonStatus');
+//  var foo = $('logonStatus');
+  var foo = document.getElementById('logonStatus');
   var left = 0;
   while (foo) {
     left += foo.offsetLeft;
     foo = foo.offsetParent;
   }
 
-  $('loginBox').style.left = (left-20) + "px";
-  $('loginBox').style.display = "block";
+//  $('loginBox').style.left = (left-20) + "px";
+//  $('loginBox').style.display = "block";
+  document.getElementById('loginBox').style.left = (left-20) + "px";
+  document.getElementById('loginBox').style.display = "block";
 }
 
-function closeLogon() {
-  $('loginBox').style.display
-}
 
 function updateRGen() {
   var randUUID = "<?php echo $osInfo->createUUID(); ?>";

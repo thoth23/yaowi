@@ -28,7 +28,6 @@ if (count($pageSplit)>1) {
   $PAGE = substr($_SERVER['PATH_INFO'],1);
 }
 ?>
-
 <div id="wiki">
 <table width=100%>
   <tr valign=top>

@@ -4,7 +4,7 @@
   <form method=post>
     <?php if (!is_null($_REQUEST['page'])) echo "<input type='hidden' name='page' value='" . $_REQUEST['page'] . "'>"; ?>
     <table>
-      <tr><td colspan=2 align=right>[<a href="#" onClick="Effect.BlindUp('loginBox', { duration: 0.5 }); return false;">Close</a>]</td></tr>
+      <tr><td colspan=2 align=right>[<a href="#" onClick="document.getElementById('loginBox').style.display='none'; return false;">Close</a>]</td></tr>
       <tr><td><?php echo $session->lang['GEN_FIRSTNAME']; ?></td><td><input type='text' name='login_fname'></td></tr>
       <tr><td><?php echo $session->lang['GEN_LASTNAME']; ?></td><td><input type='text' name='login_lname'></td></tr>
       <tr><td><?php echo $session->lang['GEN_PASSWORD']; ?></td><td><input type='password' name='login_password'></td></tr>
@@ -12,6 +12,5 @@
     </table>
   </form>
 </div>
-
 <div id='main'>
 

@@ -1,7 +1,7 @@
 <div id='topMnu'>
   <table id='topMnuTbl'>
     <tr valign=top>
-      <td id='topMnuTblLogo'><img src='<?php echo $SYSURL . $TEMPLATE_PATH; ?>/images/oswi_logo.png' alt='OpenSimulator'></td>
+      <td id='topMnuTblLogo'><a href="<?php echo $SYSURL; ?>?"><img src='<?php echo $SYSURL . $TEMPLATE_PATH; ?>/images/oswi_logo.png' alt='OpenSimulator' border=0></a></td>
       <td id='logonStatus'>
 	<?php 
 	  if ($session->logged_in) {
@@ -18,11 +18,11 @@
       <td id='topMnuTblMenu'>
 	<a href="<?php echo $SYSURL; ?>?"><?php echo $session->lang['LI_HOME']; ?></a> | 
 	<a href="<?php echo $SYSURL; ?>?page=latest"><?php echo $session->lang['LI_LATEST']; ?></a> | 
+	<a href="<?php echo $SYSURL; ?>index.php/Main_Page"><?php echo $session->lang['LI_WIKI']; ?></a> | 
 	<a href="<?php echo $SYSURL; ?>?page=users"><?php echo $session->lang['LI_USERS']; ?></a> | 
 	<a href="<?php echo $SYSURL; ?>?page=regions"><?php echo $session->lang['LI_REGIONS']; ?></a> | 
 	<a href="<?php echo $SYSURL; ?>?page=map"><?php echo $session->lang['LI_MAP']; ?></a> | 
 	<a href="<?php echo $SYSURL; ?>?page=tools"><?php echo $session->lang['LI_TOOLS']; ?></a> | 
-	<a href="<?php echo $SYSURL; ?>index.php/Main_Page"><?php echo $session->lang['LI_WIKI']; ?></a> | 
 	<a href="<?php echo $SYSURL; ?>?page=forums"><?php echo $session->lang['LI_FORUMS']; ?></a>
       </td>
       <td id='langBar'><?php echo $session->lClass->getLanguageBar(); ?></td>

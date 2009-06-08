@@ -12,7 +12,6 @@
     <title><?php echo $SITE_TITLE; ?> - Yaowi</title>
 
     <script src="js/prototype.js" type="text/javascript"></script>
-    <script src="js/scriptaculous.js" type="text/javascript"></script>
     <script src="map/OpenLayers.js" type="text/javascript"></script>
 
     <?php include($TEMPLATE_PATH . "head.inc.html"); ?>
