@@ -18,6 +18,7 @@ Class Language
 
     public function getLanguageBar()
     {
+	include("settings.php");
         $d = dir(getcwd() . "/language/");
 	$langs = array();
 	while (false !== ($entry = $d->read())) {
@@ -46,11 +47,11 @@ Class Language
 		    $pageURL = str_replace($replace, "", $pageURL);
 		}
 		if (substr($pageURL, -1)=="?")
-		    $out .= "<td><a href='" . $pageURL . "lang=$l'><img src='language/$l/$l.png' alt='$i' border=0></a></td>";
+		    $out .= "<td><a href='" . $pageURL . "lang=$l'><img src='" . $SYSURL . "language/$l/$l.png' alt='$i' border=0></a></td>";
 		else if (strpos($pageURL, "?")>-1)
-		    $out .= "<td><a href='$pageURL&lang=$l'><img src='language/$l/$l.png' alt='$i' border=0></a></td>";
+		    $out .= "<td><a href='$pageURL&lang=$l'><img src='" . $SYSURL . "language/$l/$l.png' alt='$i' border=0></a></td>";
 		else
-		    $out .= "<td><a href='$pageURL?lang=$l'><img src='language/$l/$l.png' alt='$i' border=0></a></td>";
+		    $out .= "<td><a href='$pageURL?lang=$l'><img src='" . $SYSURL . "language/$l/$l.png' alt='$i' border=0></a></td>";
 	    }
 	  }
 	  $out .= "</tr></table>";

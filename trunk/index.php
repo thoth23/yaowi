@@ -23,13 +23,17 @@
   <?php 
     include($TEMPLATE_PATH . "header.html"); 
 
-    if (is_null($_REQUEST["page"])) $_REQUEST["page"] = "home";
+    if (!is_null($_SERVER['PATH_INFO'])) {
+        require_once("wiki.php");
+    } else {
 
-    if (file_exists($TEMPLATE_PATH . $_REQUEST["page"] . ".html"))
-	include($TEMPLATE_PATH . $_REQUEST["page"] . ".html");
-    else
-  	include($TEMPLATE_PATH . "index.html");
+        if (is_null($_REQUEST["page"])) $_REQUEST["page"] = "home";
 
+        if (file_exists($TEMPLATE_PATH . $_REQUEST["page"] . ".html"))
+	    include($TEMPLATE_PATH . $_REQUEST["page"] . ".html");
+        else
+  	    include($TEMPLATE_PATH . "index.html");
+    }
 
     include($TEMPLATE_PATH . "footer.html"); 
 
