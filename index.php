@@ -38,10 +38,9 @@
     include($TEMPLATE_PATH . "footer.html"); 
 
   ?>
-
   <div id="copyright">
     <?php 
-	echo $COPYRIGHT . "<br>";
+	echo $COPYRIGHT . " :: ";
 	include($TEMPLATE_PATH . "template.cfg");
 	echo "Theme: <a href=\"$TEMPLATE_URL\">$TEMPLATE_NAME v$TEMPLATE_VERSION</a> - Copyright $copy $TEMPLATE_DATE - $TEMPLATE_AUTHOR";
     ?>

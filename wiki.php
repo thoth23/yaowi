@@ -36,15 +36,30 @@ if (count($pageSplit)>1) {
     <td id='wikiSpacer'>&nbsp;</td>
     <td id='wikiTopLinks'><table width=100%><tr><td>[ <?php
 	echo "<a href='" . $SYSURL . "index.php/" . $PAGE . "'>" . $session->lang['WIKI_TOPLINK_PAGE'] . "</a> |  ";
-	echo "<a href='" . $SYSURL . "index.php/Talk:$PAGE'>" . $session->lang['WIKI_TOPLINK_DISCUSS'] . "</a> ]</td><td align=right>[ ";
-	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=edit'>" . $session->lang['WIKI_TOPLINK_EDIT'] . "</a> | ";
-	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=history'>" . $session->lang['WIKI_TOPLINK_HISTORY'] . "</a> | ";
-	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=delete'>" . $session->lang['WIKI_TOPLINK_DELETE'] . "</a> | ";
-	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=move'>" . $session->lang['WIKI_TOPLINK_MOVE'] . " | </a>";
-        if ($session->userlevel == 5)
-	    echo "<a href='" . $SYSURL . "index.php?title=" . substr($_SERVER['PATH_INFO'],1) . "&action=protect'>" . $session->lang['WIKI_TOPLINK_PROTECT'] . "</a> | ";
-	echo "<a href='" . $SYSURL . "index.php?title=" . substr($_SERVER['PATH_INFO'],1) . "&action=watch'>" . $session->lang['WIKI_TOPLINK_WATCH'] . "</a>";
-    ?> ]</td></tr></table>
+	echo "<a href='" . $SYSURL . "index.php/Talk:$PAGE'>" . $session->lang['WIKI_TOPLINK_DISCUSS'] . "</a> ]</td><td align=center>[ ";
+	if ($session->logged_in) {
+	    echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=edit'>" . $session->lang['WIKI_TOPLINK_EDIT'] . "</a> | ";
+	} else {
+	    echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=edit'>" . $session->lang['WIKI_TOPLINK_SOURCE'] . "</a> | ";
+	}
+	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=history'>" . $session->lang['WIKI_TOPLINK_HISTORY'] . "</a>";
+	if ($session->logged_in) {
+	    echo " | <a href='" . $SYSURL . "index.php?title=$PAGE&action=delete'>" . $session->lang['WIKI_TOPLINK_DELETE'] . "</a> | ";
+	    echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=move'>" . $session->lang['WIKI_TOPLINK_MOVE'] . " | </a>";
+            if ($session->userlevel == 5)
+	        echo "<a href='" . $SYSURL . "index.php?title=" . substr($_SERVER['PATH_INFO'],1) . "&action=protect'>" . $session->lang['WIKI_TOPLINK_PROTECT'] . "</a> | ";
+	    echo "<a href='" . $SYSURL . "index.php?title=" . substr($_SERVER['PATH_INFO'],1) . "&action=watch'>" . $session->lang['WIKI_TOPLINK_WATCH'] . "</a> ]";
+	} else {
+	    echo " ]";
+	}
+	echo "</td><td align=right width=200>";
+	if ($session->logged_in) {
+	    echo " &nbsp; &nbsp; [ ";
+	    echo "<a href='" . $SYSURL . "index.php/Special:Watchlist'>" . $session->lang['WIKI_MY_WATCHLIST'] . "</a> | ";
+	    echo "<a href='" . $SYSURL . "index.php/Special:Watchlist'>" . $session->lang['WIKI_MY_CONTRIBS'] . "</a> ]";
+	}
+    ?> 
+    </td></tr></table>
   </tr>
   <tr valign=top>
     <td class='wikiLinks'>
