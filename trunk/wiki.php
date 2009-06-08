@@ -15,21 +15,51 @@
 
 require("includes/wiki.php");
 
-$wikiText = new Wiki("<strong>This is a test</strong>\n \n \n= Test =\n \n== Test again ==\n \n=== Test 3 ===\n \n==== Test 4====\n \n=== Test 5 ===\n \n== Test 6 ==\n \n= Test new header =");
-
+//$wikiText = new Wiki("<strong>This is a test</strong>\n \n \n= Test =\n \n== Test again ==\n \n=== Test 3 ===\n \n==== Test 4====\n \n=== Test 5 ===\n \n== Test 6 ==\n \n= Test new header =");
+$wikiText = new Wiki("");
+$pageSplit = explode(":", substr($_SERVER['PATH_INFO'],1),2);
+if (count($pageSplit)>1) {
+  if ($pageSplit[0]=="Special" || $pageSplit[0]=="Talk") {
+    $PAGE = $pageSplit[1];
+  } else {
+    $PAGE = substr($_SERVER['PATH_INFO'],1);
+  }
+} else {
+  $PAGE = substr($_SERVER['PATH_INFO'],1);
+}
 ?>
 
 <div id="wiki">
-<table>
+<table width=100%>
   <tr valign=top>
-    <td id='wikiLinks' rowspan=2>Test</td>
+    <td id='wikiLinks' rowspan=2>
+      <?php echo $session->lang['WIKI_NAVIGATION']; ?><br>
+      <div class='wikiNav'>
+	<li><a href='<?php echo $SYSURL; ?>index.php/Main_Page'><?php echo $session->lang['WIKI_MAIN_PAGE']; ?></a></li>
+	<li><a href='<?php echo $SYSURL; ?>index.php/Special:Recentchanges'><?php echo $session->lang['WIKI_RECENT_CHANGES']; ?></a></li>
+	<li><a href='<?php echo $SYSURL; ?>index.php/Special:Random'><?php echo $session->lang['WIKI_RANDOM_PAGE']; ?></a></li>
+      </div>
+    </td>
     <td id='wikiSpacer'>&nbsp;</td>
-    <td id='wikiTopLinks'>Page Edit History Delete Move Protect Watch</td>
+    <td id='wikiTopLinks'><table width=100%><tr><td>[ <?php
+	echo "<a href='" . $SYSURL . "index.php/" . $PAGE . "'>" . $session->lang['WIKI_TOPLINK_PAGE'] . "</a> |  ";
+	echo "<a href='" . $SYSURL . "index.php/Talk:$PAGE'>" . $session->lang['WIKI_TOPLINK_DISCUSS'] . "</a> ]</td><td align=right>[ ";
+	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=edit'>" . $session->lang['WIKI_TOPLINK_EDIT'] . "</a> | ";
+	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=history'>" . $session->lang['WIKI_TOPLINK_HISTORY'] . "</a> | ";
+	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=delete'>" . $session->lang['WIKI_TOPLINK_DELETE'] . "</a> | ";
+	echo "<a href='" . $SYSURL . "index.php?title=$PAGE&action=move'>" . $session->lang['WIKI_TOPLINK_MOVE'] . " | </a>";
+        if ($session->userlevel == 5)
+	    echo "<a href='" . $SYSURL . "index.php?title=" . substr($_SERVER['PATH_INFO'],1) . "&action=protect'>" . $session->lang['WIKI_TOPLINK_PROTECT'] . "</a> | ";
+	echo "<a href='" . $SYSURL . "index.php?title=" . substr($_SERVER['PATH_INFO'],1) . "&action=watch'>" . $session->lang['WIKI_TOPLINK_WATCH'] . "</a>";
+    ?> ]</td></tr></table>
   </tr>
   <tr valign=top>
     <td>&nbsp;</td>
     <td id='wikiMain'>
-      <?php echo $wikiText->ParsedText; ?>
+      <?php 
+	echo "<h1>" . str_replace("_", " ", substr($_SERVER['PATH_INFO'],1)) . "</h1>";
+	echo $wikiText->ParsedText; 
+      ?>
     </td>
   </tr>
 </table>
