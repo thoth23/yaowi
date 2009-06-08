@@ -32,14 +32,7 @@ if (count($pageSplit)>1) {
 <div id="wiki">
 <table width=100%>
   <tr valign=top>
-    <td id='wikiLinks' rowspan=2>
-      <?php echo $session->lang['WIKI_NAVIGATION']; ?><br>
-      <div class='wikiNav'>
-	<li><a href='<?php echo $SYSURL; ?>index.php/Main_Page'><?php echo $session->lang['WIKI_MAIN_PAGE']; ?></a></li>
-	<li><a href='<?php echo $SYSURL; ?>index.php/Special:Recentchanges'><?php echo $session->lang['WIKI_RECENT_CHANGES']; ?></a></li>
-	<li><a href='<?php echo $SYSURL; ?>index.php/Special:Random'><?php echo $session->lang['WIKI_RANDOM_PAGE']; ?></a></li>
-      </div>
-    </td>
+    <td class='wikiLinks'>Navigation</td>
     <td id='wikiSpacer'>&nbsp;</td>
     <td id='wikiTopLinks'><table width=100%><tr><td>[ <?php
 	echo "<a href='" . $SYSURL . "index.php/" . $PAGE . "'>" . $session->lang['WIKI_TOPLINK_PAGE'] . "</a> |  ";
@@ -54,6 +47,13 @@ if (count($pageSplit)>1) {
     ?> ]</td></tr></table>
   </tr>
   <tr valign=top>
+    <td class='wikiLinks'>
+      <div class='wikiNav'>
+	<li><a href='<?php echo $SYSURL; ?>index.php/Main_Page'><?php echo $session->lang['WIKI_MAIN_PAGE']; ?></a></li>
+	<li><a href='<?php echo $SYSURL; ?>index.php/Special:Recentchanges'><?php echo $session->lang['WIKI_RECENT_CHANGES']; ?></a></li>
+	<li><a href='<?php echo $SYSURL; ?>index.php/Special:Random'><?php echo $session->lang['WIKI_RANDOM_PAGE']; ?></a></li>
+      </div>
+    </td>
     <td>&nbsp;</td>
     <td id='wikiMain'>
       <?php 
