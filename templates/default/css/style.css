@@ -266,6 +266,10 @@ div.autocomplete ul li {
 
 /* Wiki stuff */
 
+#wiki {
+  margin-top: -10px;
+}
+
 .wikiLinks {
   width: 150px;
   font-weight: normal;
