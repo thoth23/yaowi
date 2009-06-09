@@ -59,8 +59,11 @@
 	  else 
 	    $style=" style='background: #000000;'";
 
-	  echo "\t<tr$style><td>" . $reg["regionName"] . "</td><td>" . $reg["locX"] . "," . $reg["locY"] . "</td><td>" . $reg["username"] . " " . $reg["lastname"] . "</td><td align=center><img src='";
-	  if ($osInfo->checkSimulator($reg["serverIP"], $reg["serverPort"])) 
+	  $div =  $reg["locX"] . "." . $reg["locY"];
+	  echo "\t<tr$style onMouseOver='showPic(event,\"$div\")' onMouseOut='hidePic(\"$div\");'><td>";
+	  echo "<div id='$div' style='position: absolute; display: none;'><img src='" . $SYSURL . "includes/map.php?x=" . $reg["locX"] . "&y=" . $reg["locY"] . "'></div>";
+	  echo $reg["regionName"] . "</td><td>" . $reg["locX"] . "," . $reg["locY"] . "</td><td>" . $reg["username"] . " " . $reg["lastname"] . "</td><td align=center><img src='";
+	  if ($osInfo->checkSimulator($reg["serverIP"], $reg["serverHttpPort"])) 
 	      echo $TEMPLATE_PATH . "images/online.png' alt='online'></td></tr>\n";
 	  else
 	      echo $TEMPLATE_PATH . "images/offline.png' alt='offline'></td></tr>\n";

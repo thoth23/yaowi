@@ -1,8 +1,24 @@
 </div>
 <div id=bottomLinks>
-  <a href="<?php echo $SYSURL; ?>?page=status"><?php echo $session->lang["LI_STATUS"]; ?></a> |
-  <a href="<?php echo $SYSURL; ?>?page=support"><?php echo $session->lang["LI_SUPPORT"]; ?></a> |
-  <a href="<?php echo $SYSURL; ?>?page=terms"><?php echo $session->lang["LI_TERMS_OF_SERVICE"]; ?></a> |
-  <a href="<?php echo $SYSURL; ?>?page=privacy"><?php echo $session->lang["LI_PRIVACY_POLICY"]; ?></a> |
-  <a href="http://www.opensimulator.org/" target="_blank">OpenSimulator</a>
+  <table width=100% cellspacing=0 cellpadding=0>
+    <tr>
+      <td>
+	<a href="<?php echo $SYSURL; ?>?page=status"><?php echo $session->lang["LI_STATUS"]; ?></a> |
+	<a href="<?php echo $SYSURL; ?>?page=support"><?php echo $session->lang["LI_SUPPORT"]; ?></a> |
+	<a href="<?php echo $SYSURL; ?>?page=terms"><?php echo $session->lang["LI_TERMS_OF_SERVICE"]; ?></a> |
+	<a href="<?php echo $SYSURL; ?>?page=privacy"><?php echo $session->lang["LI_PRIVACY_POLICY"]; ?></a> |
+	<a href="http://www.opensimulator.org/" target="_blank">OpenSimulator</a>
+      </td>
+      <td align=right>
+	<span style='color: #777777;'>
+	  <?php
+	    $time = explode(' ', microtime());
+	    $finish = $time[1] + $time[0];
+	    $total_time = round(($finish - $start), 4);
+	    echo "Page generated in $total_time seconds.";
+	  ?>
+	</span>
+      </td>
+    </tr>
+  </table>
 </div>

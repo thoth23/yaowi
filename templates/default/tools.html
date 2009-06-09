@@ -4,6 +4,10 @@
 echo "<a href=\"?page=tools&sub=uuidgen\">" . $session->lang['T_UUIDGEN_NAME'] . "</a> | ";
 echo "<a href=\"?page=tools&sub=rgen\">" . $session->lang['T_RGEN_GEN_NAME'] . "</a>";
 
+if ($session->logged_in) {
+  echo " | <a href=\"?page=tools&sub=inv\">" . $session->lang['T_INVENTORY'] . "</a>";
+}
+
 ?>
 </div>
 <br>
@@ -51,6 +55,23 @@ if (is_null($_REQUEST['sub']) || $_REQUEST['sub'] == "" || $_REQUEST['sub'] == "
 </textarea>
 </form>
 <?php
+} elseif ($_REQUEST['sub'] == "inv") {
+  echo $session->lang['T_INVENTORY'] . "<br><br>\n";
+
+  if ($session->logged_in) {
+//    $rootfolder = $osInfo->getRootFolder($session->uuid);
+//    print_r($rootfolder);
+    
+    $xml = $osInfo->getInventoryXML($session->uuid);
+    echo "<textarea style='width: 100%; height: 500px;'>$xml</textarea>";
+
+//    $folders = $osInfo->getInventoryFoldersArray($session->uuid);
+//    $folders = $osInfo->getInventoryFoldersHirachical($session->uuid);
+
+ 
+  } else {
+    echo $session->lang['T_INV_NEED_LOGIN'];
+  }
 }
 ?>
 

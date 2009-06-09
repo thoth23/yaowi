@@ -300,6 +300,9 @@ div.autocomplete ul li {
   font-weight: normal;
   font-style : normal;
   font-family : Arial,Tahoma;
+}
+
+.wikiTitle {
   margin-top: -10px;
 }
 
@@ -361,3 +364,26 @@ div.autocomplete ul li {
   margin-left: 75px;
 }
 
+.treelist {
+  margin:0px;
+  padding:0px;
+}
+
+.treelist ul {	/* Sub menu groups */
+  margin-left:20px;	/* Left spacing */
+  padding-left:0px;
+  display:none;	/* Initially hide sub nodes */
+}
+
+.treelist li{	/* Nodes */
+  list-style-type:none;
+  vertical-align:middle;		
+}
+	
+.treelist li a{	/* Node links */
+  color:#fff;
+  text-decoration:none;
+  font-family:arial;
+  font-size:0.8em;
+  padding-left:2px;
+}

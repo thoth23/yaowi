@@ -1,4 +1,7 @@
 <?php
+  $time = explode(' ', microtime());
+  $start = $time[1] + $time[0];
+
   require_once("includes/session.php");  
   require_once("includes/opensim.php");  
   
@@ -11,7 +14,9 @@
 
     <title><?php echo $SITE_TITLE; ?> - Yaowi</title>
 
-    <script src="js/prototype.js" type="text/javascript"></script>
+    <script src="<?php echo $SYSURL; ?>js/prototype.js" type="text/javascript"></script>
+    <script src="<?php echo $SYSURL; ?>js/scriptaculous.js" type="text/javascript"></script>
+    <script src="map/OpenLayers.js" type="text/javascript"></script>
     <script src="map/OpenLayers.js" type="text/javascript"></script>
 
     <?php include($TEMPLATE_PATH . "head.inc.html"); ?>
