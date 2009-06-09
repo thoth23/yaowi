@@ -22,7 +22,7 @@ if(!is_null($_REQUEST['x']) && !is_null($_REQUEST['y']))
     $result = mysql_query($query);
     if ($result && mysql_numrows($result)) {
       $uuid = str_replace("-", "", mysql_result($result, 0, "uuid"));
-      $server = "http://" . mysql_result($result, 0, "serverIP") . ":" . mysql_result($result, 0, "serverPort");
+      $server = "http://" . mysql_result($result, 0, "serverIP") . ":" . mysql_result($result, 0, "serverHttpPort");
 
       $source = $server . "/index.php?method=regionImage" . $uuid;
 

@@ -251,6 +251,195 @@ class OpenSim
     return "ST_GRID_ONLINE";
   }
 
+  public function getInventoryXML($uuid) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $xml = "<inventory>";
+
+    // Get root folder
+    $query = "SELECT * FROM inventoryfolders WHERE agentID ='$uuid' AND parentFolderID = '" . $this->null_key . "'";  ;
+
+    if ($result = mysql_query($query)) {
+      if (mysql_numrows($result)) {
+        while($row=mysql_fetch_assoc($result)) {
+	  $xml .="<folder><name>" . $row['folderName'] . "</name>";
+	  $temp = $this->getSubFoldersRecursiveXML($row['folderID']);
+	  if (!is_null($temp))
+	    $xml .= $temp;
+        }
+      }
+    }
+    $xml .= "</folder></inventory>";
+    return $this->formatXMLString($xml);
+  }
+
+  public function getSubFoldersRecursiveXML($folderUUID) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $query = "SELECT * FROM inventoryfolders WHERE parentFolderID = '$folderUUID'";
+    $xml = "";
+
+    if ($result = mysql_query($query)) {
+      while ($row = mysql_fetch_assoc($result)) {
+	$xml .= "<folder><name>" . $row['folderName'] . "</name>";
+
+	$xml .= $this->getFolderInventoryXML($row['folderID']);
+
+	$temp = $this->getSubFoldersRecursiveXML($row['folderID']);
+	if (!is_null($temp))
+	  $xml .= $this->getSubFoldersRecursiveXML($row['folderID']);
+
+	$xml .= "</folder>";
+
+      }
+    }
+
+    return $xml;
+  }
+
+  public function getFolderInventoryXML($folderUUID) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $xml = "";
+
+    $query = "SELECT * FROM inventoryitems WHERE parentFolderID ='$folderUUID'";
+    if ($result2 = mysql_query($query)) {
+      if (mysql_numrows($result2)) {
+        for ($i=0; $i < mysql_numrows($result2); $i++) {
+          $xml .= "<item><name>" . mysql_result($result2, $i, "inventoryName") . "</name><uuid>"
+               . mysql_result($result2, $i, "assetID") . "</uuid><type>"
+               . $this->getInventoryType(mysql_result($result2, $i, "assetType")) . "</type></item>";
+        }
+      }
+    }
+    
+    return $xml;
+
+    mysql_close();
+  }
+
+  public function formatXMLString($xml) {  
+  
+    // add marker linefeeds to aid the pretty-tokeniser (adds a linefeed between all tag-end boundaries)
+    $xml = preg_replace('/(>)(<)(\/*)/', "$1\n$2$3", $xml);
+  
+    // now indent the tags
+    $token      = strtok($xml, "\n");
+    $result     = ''; // holds formatted version as it is built
+    $pad        = 0; // initial indent
+    $matches    = array(); // returns from preg_matches()
+  
+    // scan each line and adjust indent based on opening/closing tags
+    while ($token !== false) : 
+  
+      // test for the various tag states
+    
+      // 1. open and closing tags on same line - no change
+      if (preg_match('/.+<\/\w[^>]*>$/', $token, $matches)) : 
+        $indent=0;
+      // 2. closing tag - outdent now
+      elseif (preg_match('/^<\/\w/', $token, $matches)) :
+        $pad--;
+      // 3. opening tag - don't pad this one, only subsequent tags
+      elseif (preg_match('/^<\w[^>]*[^\/]>.*$/', $token, $matches)) :
+        $indent=1;
+      // 4. no indentation needed
+      else :
+        $indent = 0; 
+      endif;
+    
+      // pad the line with the required number of leading spaces
+      $line    = str_pad($token, strlen($token)+$pad, ' ', STR_PAD_LEFT);
+      $result .= $line . "\n"; // add to the cumulative result, with linefeed
+      $token   = strtok("\n"); // get the next token
+      $pad    += $indent; // update the pad size for subsequent lines    
+    endwhile; 
+  
+    return $result;
+  }
+
+  public function getInventoryFoldersHirachical($uuid) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $array = array();
+
+    $query = "SELECT folderID AS id, parentFolderID AS parent_id, folderName FROM inventoryfolders WHERE agentID ='$uuid'";
+    if ($result = mysql_query($query)) {
+      if (mysql_numrows($result)) {
+        while($row=mysql_fetch_assoc($result)) {
+	  $array[] = $row;
+        }
+      }
+    }
+
+    return $array;
+  }
+
+  public function getFolderContents($folderUUID) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $array = array();
+
+    $query = "SELECT * FROM inventoryitems WHERE parentFolderID = '$folderUUID'";  ;
+
+    if ($result = mysql_query($query)) {
+      while ($row = mysql_fetch_assoc($result)) {
+	$array[] = $row;
+      }
+    }
+
+    return $array;
+
+  }
+
+  public function getInventoryType($type) {
+    switch ($type) {
+      case 0:
+	return "Texture";
+	break;
+      case 2:
+	return "Calling card";
+	break;
+      case 6:
+	return "Primative";
+	break;
+      case 10:
+	return "Script";
+	break;
+      case 18:
+	return "Clothing";
+	break;
+      case 19:
+	return "Animation";
+	break;
+      case 20:
+	return "Gesture";
+	break;
+      default:
+	return "Unknown";
+    }
+  }
+
   public function cleanQuery($string)
   {
     if(get_magic_quotes_gpc()) $string = stripslashes($string);

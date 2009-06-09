@@ -14,9 +14,11 @@
 */
 
 require("includes/wiki.php");
-
 //$wikiText = new Wiki("<strong>This is a test</strong>\n \n \n= Test =\n \n== Test again ==\n \n=== Test 3 ===\n \n==== Test 4====\n \n=== Test 5 ===\n \n== Test 6 ==\n \n= Test new header =");
 $wikiText = new Wiki("");
+
+//echo $wikiText->ParsedText;;
+
 $pageSplit = explode(":", substr($_SERVER['PATH_INFO'],1),2);
 if (count($pageSplit)>1) {
   if ($pageSplit[0]=="Special" || $pageSplit[0]=="Talk") {
@@ -71,7 +73,7 @@ if (count($pageSplit)>1) {
     <td>&nbsp;</td>
     <td id='wikiMain'>
       <?php 
-	echo "<h1>" . str_replace("_", " ", substr($_SERVER['PATH_INFO'],1)) . "</h1>";
+	echo "<h1 class='wikiTitle'>" . str_replace("_", " ", substr($_SERVER['PATH_INFO'],1)) . "</h1>";
 	echo $wikiText->ParsedText; 
       ?>
     </td>
