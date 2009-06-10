@@ -28,7 +28,7 @@
     include($TEMPLATE_PATH . "header.html"); 
 
     if (!is_null($_SERVER['PATH_INFO'])) {
-        require_once("wiki.php");
+        require_once($TEMPLATE_PATH . "wiki.php");
     } else {
 
         if (is_null($_REQUEST["page"])) $_REQUEST["page"] = "home";
@@ -39,6 +39,9 @@
   	    include($TEMPLATE_PATH . "index.html");
     }
 
+    $time = explode(' ', microtime());
+    $finish = $time[1] + $time[0];
+    $total_time = round(($finish - $start), 4);
     include($TEMPLATE_PATH . "footer.html"); 
 
   ?>
@@ -47,6 +50,9 @@
 	echo $COPYRIGHT . " :: ";
 	include($TEMPLATE_PATH . "template.cfg");
 	echo "Theme: <a href=\"$TEMPLATE_URL\">$TEMPLATE_NAME v$TEMPLATE_VERSION</a> - Copyright $copy $TEMPLATE_DATE - $TEMPLATE_AUTHOR";
+
+
+  	require("includes/stats.php");
     ?>
   </div>
   </body>

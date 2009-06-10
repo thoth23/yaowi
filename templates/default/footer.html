@@ -12,9 +12,6 @@
       <td align=right>
 	<span style='color: #777777;'>
 	  <?php
-	    $time = explode(' ', microtime());
-	    $finish = $time[1] + $time[0];
-	    $total_time = round(($finish - $start), 4);
 	    echo "Page generated in $total_time seconds.";
 	  ?>
 	</span>

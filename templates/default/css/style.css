@@ -264,6 +264,20 @@ div.autocomplete ul li {
   border-bottom: solid 1px #555555;
 }
 
+/* Region stuff */
+
+.regPicName {
+  position: absolute; 
+  background: #444444; 
+  border: solid 1px #666666; 
+  padding: 1px;
+  font-weight: normal;
+  font-style : normal;
+  font-size : 7pt;
+  font-family : Arial,Tahoma;  
+  margin: 1px;
+}
+
 /* Wiki stuff */
 
 #wiki {

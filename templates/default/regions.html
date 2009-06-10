@@ -6,9 +6,10 @@
     if ($session->logged_in) {
         $myRegions = $osInfo->getRegionList("",0,0,$session->uuid);
 	if (!empty($myRegions) && !is_null($myRegions))
-	    echo "<td><a href='?page=regions&type=mine'>" . $session->lang['REGION_MY_REGIONS'] . "</a></td><td>|</td>";	
+	    echo "<td><a href='" . $SYSURL . "index.php?page=regions&type=mine'>" . $session->lang['REGION_MY_REGIONS'] . "</a></td><td>|</td>";
     }
 ?>
+	<td><a href='<?php echo $SYSURL; ?>index.php?page=regions&type=map'><?php echo $session->lang['LI_MAP']; ?></a></td><td>|</td>
 	<td><?php echo $session->lang['GEN_SEARCH']; ?></td>
 	<td><input type="text" id="regionSearch" name="search" autocomplete="off"></td><td><input type="submit" value="<?php echo $session->lang['GEN_SEARCH']; ?>"></td>
     </tr>
@@ -31,6 +32,9 @@
     </script>
     <br><br>
     <?php 
+      if (!is_null($_REQUEST['type']) && $_REQUEST['type'] == "map") {
+	include("map.html");
+      } else {
 	if (!is_null($_REQUEST['search']) && $_REQUEST['search'] != "") 
 	    echo $session->lang['GEN_SEARCH'] . ": " . $_REQUEST['search'] . " [<a href='?page=regions'>Clear</a>]"; 
 	elseif (!is_null($_REQUEST['type']) && $_REQUEST['type'] == "mine")
@@ -61,7 +65,7 @@
 
 	  $div =  $reg["locX"] . "." . $reg["locY"];
 	  echo "\t<tr$style onMouseOver='showPic(event,\"$div\")' onMouseOut='hidePic(\"$div\");'><td>";
-	  echo "<div id='$div' style='position: absolute; display: none;'><img src='" . $SYSURL . "includes/map.php?x=" . $reg["locX"] . "&y=" . $reg["locY"] . "'></div>";
+	  echo "<div id='$div' style='position: absolute; display: none;'><div class='regPicName'>" . $reg["regionName"] . "</div><img src='" . $SYSURL . "includes/map.php?x=" . $reg["locX"] . "&y=" . $reg["locY"] . "')' height=128></div>";
 	  echo $reg["regionName"] . "</td><td>" . $reg["locX"] . "," . $reg["locY"] . "</td><td>" . $reg["username"] . " " . $reg["lastname"] . "</td><td align=center><img src='";
 	  if ($osInfo->checkSimulator($reg["serverIP"], $reg["serverHttpPort"])) 
 	      echo $TEMPLATE_PATH . "images/online.png' alt='online'></td></tr>\n";
@@ -73,3 +77,4 @@
       }
     ?>
     </table>
+  <?php } ?>
