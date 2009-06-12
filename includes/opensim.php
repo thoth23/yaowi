@@ -400,7 +400,7 @@ class OpenSim
 
     $array = array();
 
-    $query = "SELECT * FROM inventoryitems WHERE parentFolderID = '$folderUUID'";  ;
+    $query = "SELECT * FROM inventoryitems WHERE parentFolderID = " . $this->cleanQuery('$folderUUID') . "'";  ;
 
     if ($result = mysql_query($query)) {
       while ($row = mysql_fetch_assoc($result)) {
@@ -463,6 +463,42 @@ class OpenSim
     $uuid .= substr($chars,20,12);
     return $prefix . $uuid;
 
+  }
+
+  public function emailExists($email) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+
+    $query = "SELECT * FROM users WHERE email = '" . $this->cleanQuery($email) . "'";
+
+    if ($result = mysql_query($query)) {
+      return (mysql_numrows($result));
+    }
+
+    return false;
+  
+  }
+
+  public function usernameExists($fname, $lname) {
+    require("settings.php");
+
+    // Open the Database
+    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
+    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+
+    $query = "SELECT * FROM users WHERE username = '" . $this->cleanQuery($fname) . "' AND lastname = '" . $this->cleanQuery($lname) . "'";
+
+    if ($result = mysql_query($query)) {
+      return (mysql_numrows($result));
+    }
+
+    return false;
+  
   }
   
 }

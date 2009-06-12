@@ -1,0 +1,49 @@
+<?php
+
+if ($session->logged_in) {
+  echo "<table height=300 width=100%><tr><td align=center>" . $session->lang['REG_ALREADY_REG'] . "</td></tr></table>";
+} else {
+  if ((is_null($_REQUEST['sub']) || $_REQUEST['sub']=="") && is_null($_REQUEST['accept'])) {
+    echo str_replace(array("SITE_TITLE", "SYSURL"), array($SITE_TITLE, $SYSURL), $session->lang['REG_TERMS_OF_USE']);
+    echo "<br><br><br><div align=center><form method='post'><table><tr><td>";
+    echo "<input type='submit' name='accept' value='" . $session->lang['REG_AGREE_TERMS'] . "'>";
+    echo "</td><td width=20></form><form method='get' action='http://www.google.com/search'>&nbsp;</td><td>";
+    echo "<input type='submit' value='" . $session->lang['REG_NOT_AGREE_TERMS'] . "'><input type='hidden' name='q' value='anarchist'>";
+    echo "</td></tr></table></form></div>";
+  } elseif ($_REQUEST['accept'] == $session->lang['REG_AGREE_TERMS']) {
+
+$regions = $osInfo->getRegionList();
+?>
+<form method='post' id='regForm'>
+<input type='hidden' name='sub' value='1'>
+  <table align=center>
+    <tr><td colspan=2 align=center><h2><?php echo $session->lang['REG_REGISTRATION']; ?></h2></td></tr>
+    <tr valign=top><td colspan=2 align=center height=30><b style='color: #ff0000;'><?php echo $session->lang['REG_USER_REQUIRED']; ?></b></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_FNAME']; ?>:</td><td><input type='text' name='user_fname' id='user_fname' maxlength=15 value='<?php echo $_REQUEST['user_fname']; ?>'></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_LNAME']; ?>:</td><td><input type='text' name='user_lname' id='user_lname'  maxlength=15 value='<?php echo $_REQUEST['user_lname']; ?>'></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_PWORD']; ?>:</td><td><input type='password' name='user_pword' id='user_pword' value='<?php echo $_REQUEST['user_pword']; ?>' onKeyUp='verifyPword();' onBlur='verifyPword();'></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_PWORD_VERIFY']; ?>:</td><td><input type='password' name='user_pword2' id='user_pword2' value='<?php echo $_REQUEST['user_pword2']; ?>' onKeyUp='verifyPword();' onBlur='verifyPword();'></td></tr>
+    <tr><td colspan=2 align=right><div id='pwordCheck'>&nbsp;</div></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_START_REGION']; ?>:</td><td><select name='user_startregion' id='user_startregion'><?php foreach ($regions as $region) { echo "<option value='" . $region['regionHandle'] . "'>" . $region['regionName'] . "</option>"; } ?></select></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_EMAIL']; ?>:</td><td><input type='text' name='user_email' id='user_email' value='<?php echo $_REQUEST['user_email']; ?>' onKeyUp='verifyEmail();' onBlur='verifyEmail();'></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_EMAIL_VERIFY']; ?>:</td><td><input type='text' name='user_email2' id='user_email2' value='<?php echo $_REQUEST['user_email2']; ?>' onKeyUp='verifyEmail();' onBlur='verifyEmail();'></td></tr>
+    <tr><td colspan=2 align=right><div id='emailCheck'>&nbsp;</div></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_REAL_FNAME']; ?>:</td><td><input type='text' name='user_realfname' id='user_realfname' value='<?php echo $_REQUEST['user_realfname']; ?>'></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_REAL_LNAME']; ?>:</td><td><input type='text' name='user_reallname' id='user_reallname' value='<?php echo $_REQUEST['user_reallname']; ?>'></td></tr>
+    <tr><td><?php echo $session->lang['REG_USER_DOB']; ?>:</td>
+	<td><select name='user_dob_day' id='user_dob_day'><option>DD</option><?php for($i=1; $i<32; $i++) { echo "<option"; if ($i==$_REQUEST['user_dob_day']) echo " selected"; echo ">$i</option>"; }?></select>:
+	<select name='user_dob_month' id='user_dob_month'><option>MM</option><?php for($i=1; $i<13; $i++) { echo "<option"; if ($i==$_REQUEST['user_dob_month']) echo " selected"; echo ">$i</option>"; }?></select>:
+	<select name='user_dob_year' id='user_dob_year'><option>YYYY</option><?php for($i=(date("Y")-80); $i < date("Y")-17; $i++) { echo "<option"; if ($i==$_REQUEST['user_dob_year']) echo " selected"; echo ">$i</option>"; }?></select></td></tr>
+    <tr><td colspan=2 align=center><div id='formCheck'>&nbsp;</div></td></tr>
+    <tr><td colspan=2 align=center><input type='submit' value='<?php echo $session->lang['REG_REGISTER']; ?>' onClick='verifyForm(); return false;'> &nbsp; <input type='reset' value='<?php echo $session->lang['REG_CANCEL']; ?>'></td></tr>
+  </table>
+</form>
+
+<?php
+  } else if ($_REQUEST['sub']) {
+    echo "<pre>";
+    print_r($_REQUEST);
+    echo "</pre>";
+  }
+}
+?>

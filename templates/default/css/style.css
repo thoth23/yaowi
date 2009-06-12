@@ -78,7 +78,7 @@ BODY {
   display: none;
 }
 
-INPUT[type=text], INPUT[type=password] {
+INPUT[type=text], INPUT[type=password], SELECT {
   font-weight: bold;
   font-style : normal;
   font-size : 8pt;
@@ -88,14 +88,14 @@ INPUT[type=text], INPUT[type=password] {
   color: #ffffff;
 }
 
-INPUT[type=submit] {
+INPUT[type=submit], INPUT[type=reset] {
   font-weight: bold;
   font-style : normal;
   font-size : 8pt;
   font-family : Arial,Tahoma;
   color: #ffffff;
-  border: solid 1px #555555;
-  background: #aaaaaa;
+  border: solid 1px #666666;
+  background: #444444;
 }
 
 INPUT[type=button] {
