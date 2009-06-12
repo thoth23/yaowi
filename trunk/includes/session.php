@@ -4,6 +4,7 @@ require("language.php");
 Class Session {
 
   public $lang = array();
+  public $langCode;
   public $lClass;
   public $username;
   public $firstname;
@@ -41,9 +42,11 @@ Class Session {
     if (!is_null($_REQUEST['lang'])) {
       $this->lang = $this->lClass->getLanguageDef($_REQUEST['lang']);
       $_SESSION['lang'] = $_REQUEST['lang'];
+      $this->langCode = $_REQUEST['lang'];
     }
     elseif (!is_null($_SESSION['lang'])) {
       $this->lang = $this->lClass->getLanguageDef($_SESSION['lang']);
+      $this->langCode = $_SESSION['lang'];
     } else {
 
       // Are we doing the auto language?
@@ -55,15 +58,18 @@ Class Session {
 	  // We have the language
           $_SESSION['lang'] = $this->userCountry;
           $this->lang = $this->lClass->getLanguageDef($this->userCountry);
+          $this->langCode = $this->userCountry;
 	} else {
           // If all else fails, default to language in settings
           $_SESSION['lang'] = $BASE_LANGUAGE;
           $this->lang = $this->lClass->getLanguageDef($BASE_LANGUAGE);
+          $this->langCode = $BASE_LANGUAGE;
 	}
       } else {
         // If all else fails, default to language in settings
         $_SESSION['lang'] = $BASE_LANGUAGE;
         $this->lang = $this->lClass->getLanguageDef($BASE_LANGUAGE);
+        $this->langCode = $BASE_LANGUAGE;
       }
     }
 
@@ -152,6 +158,41 @@ Class Session {
       $string = mysql_escape_string($string);
 
     return $string;
+  }
+  
+  public function checkEmailFormat($email) {
+    if (!ereg("^[^@]{1,64}@[^@]{1,255}$", $email)) {
+      return false;
+    }
+
+    $email_array = explode("@", $email);
+    $local_array = explode(".", $email_array[0]);
+    for ($i = 0; $i < sizeof($local_array); $i++) {
+      if (!ereg("^(([A-Za-z0-9!#$%&'*+/=?^_`{|}~-][A-Za-z0-9!#$%&'*+/=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$", $local_array[$i])) {
+        return false;
+      }
+    }
+    if (!ereg("^\[?[0-9\.]+\]?$", $email_array[1])) { 
+      $domain_array = explode(".", $email_array[1]);
+      if (sizeof($domain_array) < 2) {
+        return false;
+      }
+      for ($i = 0; $i < sizeof($domain_array); $i++) {
+        if (!ereg("^(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$", $domain_array[$i])) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  public function checkEmailByDNS($email) {
+    if (!is_null(PHP_OS) && stristr(PHP_OS, 'WIN') === false) {
+      $email_array = explode("@", $email);
+       return checkdnsrr($email_array[1], "MX");
+    } else {
+      return true;
+    }
   }
 
 }

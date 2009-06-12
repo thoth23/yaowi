@@ -3,6 +3,9 @@
 
 <script type="text/javascript">
 
+var pwordOK = false;
+var emailOK = false;
+
 function showLogon() {
 //  var foo = $('logonStatus');
   var foo = document.getElementById('logonStatus');
@@ -52,6 +55,65 @@ function updateRGen() {
 
   new Ajax.Updater('locCheck', '<?php echo $SYSURL; ?>includes/checkLocation.php?x=' + document.regionGen.regionLocX.value + '&y=' + document.regionGen.regionLocY.value);
 
+}
+
+function verifyPword() {
+  if ($('user_pword').value != "" && $('user_pword2').value != "") {
+    if ($('user_pword').value.length < 6) {
+      $('pwordCheck').innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_PW_LENGTH']; ?></b></span>";
+      pwordOK = false;
+    } else if($('user_pword').value != $('user_pword2').value) {
+      $('pwordCheck').innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_PW_MATCH']; ?></b></span>";
+      pwordOK = false;
+    } else {
+      $('pwordCheck').innerHTML = "<span style='color: green'><b><?php echo $session->lang['REG_OK_PW_MATCH']; ?></b></span>";
+      pwordOK = true;
+    }
+  } else {
+    $('pwordCheck').innerHTML = "&nbsp;";
+    pwordOK = false;
+  }
+}
+
+function verifyEmail(){
+  var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+ 
+     if ($('user_email').value.search(emailRegEx) == -1) {
+       $('emailCheck').innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_EM_INVALID']; ?></b></span>";
+       emailOK = false;
+     }
+     else if ($('user_email').value != $('user_email2').value) {
+       $('emailCheck').innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_EM_MATCH']; ?></b></span>";
+       emailOK = false;
+     }
+     else {
+       $('emailCheck').innerHTML = "<span style='color: green'><b><?php echo $session->lang['REG_OK_EM_MATCH']; ?></b></span>";
+       emailOK = true;
+     }
+}
+
+function verifyForm() {
+  $alert = $('formCheck');
+  if ($('user_fname').value.length < 3 || $('user_lname').value.length < 3) {
+    $alert.innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_NAME_LENGTH']; ?></b></span>";
+  } else if (!pwordOK) {
+    $alert.innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_PW_INVALID']; ?></b></span>";
+  } else if (!emailOK) {
+    $alert.innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_EM_INVALID']; ?></b></span>";
+  } else if ($('user_realfname').value == "" || $('user_reallname').value == "") {
+    $alert.innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_REAL_NAME']; ?></b></span>";
+  } else if ($('user_dob_day').value == "DD" || $('user_dob_month').value == "MM" || $('user_dob_year').value == "YYYY") {
+    $alert.innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_DOB']; ?></b></span>";
+  } else {
+    var d = new Date();
+    d.setFullYear($('user_dob_year').value, $('user_dob_month').value-1, $('user_dob_day').value);
+    if (d.getDate() == $('user_dob_day').value && d.getMonth() == $('user_dob_month').value-1 && d.getFullYear() == $('user_dob_year').value) {
+      new Ajax.Updater('formCheck', 'includes/formCheck.php?type=email&address=' + $('user_email').value);      
+      new Ajax.Updater('formCheck', 'includes/formCheck.php?type=username&fname=' + $('user_fname').value + "&lname=" + $('user_lname').value, { evalScripts: true }); 
+     } else {
+      $alert.innerHTML = "<span style='color: red'><b><?php echo $session->lang['REG_ERROR_DOB']; ?></b></span>";
+     }
+  }
 }
 
 </script>

@@ -7,6 +7,7 @@
   
   $session = new Session($_REQUEST['login_fname'], $_REQUEST['login_lname'], $_REQUEST['login_password'], $_REQUEST['action'] == 'logoff');
   $osInfo = new OpenSim();
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
