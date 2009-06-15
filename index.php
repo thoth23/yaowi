@@ -18,13 +18,11 @@
     <script src="<?php echo $SYSURL; ?>js/prototype.js" type="text/javascript"></script>
     <script src="<?php echo $SYSURL; ?>js/scriptaculous.js" type="text/javascript"></script>
     <script src="map/OpenLayers.js" type="text/javascript"></script>
-    <script src="map/OpenLayers.js" type="text/javascript"></script>
 
     <?php include($TEMPLATE_PATH . "head.inc.html"); ?>
         
   </head>
-  <body>
-  
+  <body<?php if ($session->login_message!="") echo " onLoad=\"alert('" . $session->login_message . "')\""; ?>>
   <?php 
     include($TEMPLATE_PATH . "header.html"); 
 

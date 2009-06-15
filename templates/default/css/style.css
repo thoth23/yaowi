@@ -19,6 +19,21 @@ BODY {
   width: 99%;
 }
 
+#messages {
+  position: absolute;
+  width: 300px;
+  border: solid 1px #444444;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background: #ff0000;
+  font-weight: bold;
+  left: 50%;
+  top: 50%;
+  margin-left: -150px;
+  margin-top: -50px;
+}
+
 #main {
   width: 765px;
   padding: 20px 0px 20px 0px;
@@ -99,9 +114,13 @@ INPUT[type=submit], INPUT[type=reset] {
 }
 
 INPUT[type=button] {
+  font-weight: bold;
+  font-style : normal;
+  font-size : 8pt;
+  font-family : Arial,Tahoma;
   color: #ffffff;
-  border: solid 1px #555555;
-  background: #aaaaaa;
+  border: solid 1px #666666;;
+  background: #444444;
 }
 
 TEXTAREA {
