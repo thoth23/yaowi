@@ -21,43 +21,46 @@ class OpenSim
   public $null_key = "00000000-0000-0000-0000-000000000000";
 
   function __construct() {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     // Get online user count
     $query = "SELECT * FROM agents where agentOnline=1";
-    if (mysql_query($query))
-      $this->online_count = mysql_numrows(mysql_query($query));
+    if ($result = $this->queryDatabase($query))
+      $this->online_count = mysql_numrows($result);
 
     // Get unique count
     $last = time() - 2592000;
     $query="SELECT * FROM agents where loginTime >= $last OR logoutTime >= $last";
-    if (mysql_query($query))
-      $this->unique_count = mysql_numrows(mysql_query($query));
+    if ($result = $this->queryDatabase($query))
+      $this->unique_count = mysql_numrows($result);
 
     // Get Total user count
     $query="SELECT * FROM users";
-    if (mysql_query($query))
-      $this->user_count = mysql_numrows(mysql_query($query));
+    if ($result = $this->queryDatabase($query))
+      $this->user_count = mysql_numrows($result);
 
     // Get Region count
     $query="SELECT * FROM regions";
-    if (mysql_query($query))
-      $this->region_count = mysql_numrows(mysql_query($query));
+    if ($result = $this->queryDatabase($query))
+      $this->region_count = mysql_numrows($result);
 
-    // Close the database
-    mysql_close();
   }
 
-  function getRegionList($search="", $start=0, $end=0, $owner=NULL) {
+  function queryDatabase($query) {
     require("settings.php");
 
     // Open the Database
     mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $ret = mysql_query($query);
+
+    mysql_close();
+
+    return $ret;
+
+  }
+
+  function getRegionList($search="", $start=0, $end=0, $owner=NULL) {
 
     $query = "SELECT regions.*, users.username, users.lastname FROM regions LEFT JOIN users ON regions.owner_uuid = users.UUID";
     if (!is_null($search) && $search != "") $query .= " WHERE regions.regionName LIKE '" . $this->cleanQuery($search) . "'";
@@ -72,7 +75,7 @@ class OpenSim
 
     if ($start || $end)	$query .= $this->cleanQuery(" LIMIT $start, $end");
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       if (mysql_numrows($result)) {
         while($row=mysql_fetch_assoc($result)) {
           $array[] = $row;
@@ -81,20 +84,12 @@ class OpenSim
     }
 
     return $array;
-
-    // Close the database
-    mysql_close();
   }
 
   function getRegionBitmap($uuid) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = $this->cleanQuery("SELECT serverIP, serverHttpPort FROM regions WHERE uuid = '$uuid'");
-    $result = mysql_query($query);
+    $result = $this->queryDatabase($query);
 
     if ($result) {
       $source = "http://" . mysql_result($result,0,"serverIP") . ":" . mysql_result($result,0,"serverHttpPort") . "/index.php?method=regionImage" . str_replace("-", "", $uuid);
@@ -105,18 +100,10 @@ class OpenSim
       fclose($handle);
       return $content;
     }
-
-    // Close the database
-    mysql_close();
     
   }
 
   function getOnlineList($search="", $start=0, $end=0) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = "SELECT agents.*, users.username, users.lastname, regions.regionName FROM agents LEFT JOIN users ON agents.UUID = users.UUID LEFT JOIN regions ON agents.currentRegion = regions.uuid WHERE agents.agentOnline = 1";
 
@@ -125,7 +112,7 @@ class OpenSim
 
     if ($start || $end)	$query .= $this->cleanQuery(" LIMIT $start, $end");
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       if (mysql_numrows($result)) {
         while($row=mysql_fetch_assoc($result)) {
           $array[] = $row;
@@ -134,20 +121,12 @@ class OpenSim
     }
 
     return $array;
-
-    // Close the database
-    mysql_close();
   }
 
   function getFriendsList($uuid) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = "SELECT userfriends.*, agents.*, users.username, users.lastname, regions.regionName FROM userfriends LEFT JOIN agents ON friendID = agents.UUID LEFT JOIN users ON agents.UUID = users.UUID LEFT JOIN regions ON agents.currentRegion = regions.uuid WHERE userfriends.ownerID ='" . $this->cleanQuery($uuid) . "' ORDER BY agents.agentOnline";
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       if (mysql_numrows($result)) {
         while($row=mysql_fetch_assoc($result)) {
           $array[] = $row;
@@ -156,14 +135,10 @@ class OpenSim
     }
 
     return $array;
-
-    // Close the database
-    mysql_close();
   }
 
 
   function getFullUserList($search="", $start=0, $end=0) {
-    require("settings.php");
 
     // Split the search terms
     if ($search !="") {
@@ -177,10 +152,6 @@ class OpenSim
 	}
     }
 
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
-
     $query = "SELECT agents.*, users.username, users.lastname, regions.regionName FROM agents LEFT JOIN users ON agents.UUID = users.UUID LEFT JOIN regions ON agents.currentRegion = regions.uuid";
 
     if ($search != "") $query .= $this->cleanQuery(" WHERE users.username LIKE '$fname' AND users.lastname LIKE '$lname'");
@@ -188,7 +159,7 @@ class OpenSim
 
     if ($start || $end)	$query .= $this->cleanQuery(" LIMIT $start, $end");
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       if (mysql_numrows($result)) {
         while($row=mysql_fetch_assoc($result)) {
           $array[] = $row;
@@ -197,45 +168,26 @@ class OpenSim
     }
 
     return $array;
-
-    // Close the database
-    mysql_close();
   }
 
   function getNameFromUUID($uuid) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = "SELECT * FROM users WHERE UUID='" . $this->cleanQuery($uuid) . "'";
-    $result = mysql_query($query) or die (mysql_error());
+    $result = $this->queryDatabase($query);
 
     if ($result) {
       return mysql_result($result,0,"username") . " " . mysql_result($result,0,"lastname");
     }
-
-    // Close the database
-    mysql_close(); 
   }
 
   function checkLocation($x, $y) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = "SELECT * FROM regions WHERE locX ='" . $this->cleanQuery($x) . "' AND locY = '" . $this->cleanQuery($y) . "'";
-    $result = mysql_query($query) or die (mysql_error());
+    $result = $this->queryDatabase($query);
 
     if ($result) {
       return mysql_numrows($result);
     }
-
-    // Close the database
-    mysql_close(); 
   }
 
   public function checkSimulator($address, $port) {
@@ -252,18 +204,13 @@ class OpenSim
   }
 
   public function getInventoryXML($uuid) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $xml = "<inventory>";
 
     // Get root folder
     $query = "SELECT * FROM inventoryfolders WHERE agentID ='$uuid' AND parentFolderID = '" . $this->null_key . "'";  ;
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       if (mysql_numrows($result)) {
         while($row=mysql_fetch_assoc($result)) {
 	  $xml .="<folder><name>" . $row['folderName'] . "</name>";
@@ -278,16 +225,11 @@ class OpenSim
   }
 
   public function getSubFoldersRecursiveXML($folderUUID) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $query = "SELECT * FROM inventoryfolders WHERE parentFolderID = '$folderUUID'";
     $xml = "";
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       while ($row = mysql_fetch_assoc($result)) {
 	$xml .= "<folder><name>" . $row['folderName'] . "</name>";
 
@@ -306,16 +248,11 @@ class OpenSim
   }
 
   public function getFolderInventoryXML($folderUUID) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $xml = "";
 
     $query = "SELECT * FROM inventoryitems WHERE parentFolderID ='$folderUUID'";
-    if ($result2 = mysql_query($query)) {
+    if ($result2 = $this->queryDatabase($query)) {
       if (mysql_numrows($result2)) {
         for ($i=0; $i < mysql_numrows($result2); $i++) {
           $xml .= "<item><name>" . mysql_result($result2, $i, "inventoryName") . "</name><uuid>"
@@ -326,8 +263,6 @@ class OpenSim
     }
     
     return $xml;
-
-    mysql_close();
   }
 
   public function formatXMLString($xml) {  
@@ -371,16 +306,11 @@ class OpenSim
   }
 
   public function getInventoryFoldersHirachical($uuid) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $array = array();
 
     $query = "SELECT folderID AS id, parentFolderID AS parent_id, folderName FROM inventoryfolders WHERE agentID ='$uuid'";
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       if (mysql_numrows($result)) {
         while($row=mysql_fetch_assoc($result)) {
 	  $array[] = $row;
@@ -392,17 +322,12 @@ class OpenSim
   }
 
   public function getFolderContents($folderUUID) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     $array = array();
 
     $query = "SELECT * FROM inventoryitems WHERE parentFolderID = " . $this->cleanQuery('$folderUUID') . "'";  ;
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       while ($row = mysql_fetch_assoc($result)) {
 	$array[] = $row;
       }
@@ -421,7 +346,7 @@ class OpenSim
 	return "Calling card";
 	break;
       case 6:
-	return "Primative";
+	return "Primitive";
 	break;
       case 10:
 	return "Script";
@@ -466,16 +391,10 @@ class OpenSim
   }
 
   public function emailExists($email) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
-
 
     $query = "SELECT * FROM users WHERE email = '" . $this->cleanQuery($email) . "'";
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       return (mysql_numrows($result));
     }
 
@@ -484,16 +403,10 @@ class OpenSim
   }
 
   public function usernameExists($fname, $lname) {
-    require("settings.php");
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
-
 
     $query = "SELECT * FROM users WHERE username = '" . $this->cleanQuery($fname) . "' AND lastname = '" . $this->cleanQuery($lname) . "'";
 
-    if ($result = mysql_query($query)) {
+    if ($result = $this->queryDatabase($query)) {
       return (mysql_numrows($result));
     }
 
