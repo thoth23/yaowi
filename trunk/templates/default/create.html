@@ -16,6 +16,7 @@ $regions = $osInfo->getRegionList();
 ?>
 <form method='post' id='regForm'>
 <input type='hidden' name='sub' value='1'>
+<input type='hidden' name='userip' value='<?php echo $_SERVER['REMOTE_ADDR']; ?>'>
   <table align=center>
     <tr><td colspan=2 align=center><h2><?php echo $session->lang['REG_REGISTRATION']; ?></h2></td></tr>
     <tr valign=top><td colspan=2 align=center height=30><b style='color: #ff0000;'><?php echo $session->lang['REG_USER_REQUIRED']; ?></b></td></tr>
@@ -33,7 +34,7 @@ $regions = $osInfo->getRegionList();
     <tr><td><?php echo $session->lang['REG_USER_DOB']; ?>:</td>
 	<td><select name='user_dob_day' id='user_dob_day'><option>DD</option><?php for($i=1; $i<32; $i++) { echo "<option"; if ($i==$_REQUEST['user_dob_day']) echo " selected"; echo ">$i</option>"; }?></select>:
 	<select name='user_dob_month' id='user_dob_month'><option>MM</option><?php for($i=1; $i<13; $i++) { echo "<option"; if ($i==$_REQUEST['user_dob_month']) echo " selected"; echo ">$i</option>"; }?></select>:
-	<select name='user_dob_year' id='user_dob_year'><option>YYYY</option><?php for($i=(date("Y")-80); $i < date("Y")-17; $i++) { echo "<option"; if ($i==$_REQUEST['user_dob_year']) echo " selected"; echo ">$i</option>"; }?></select></td></tr>
+	<select name='user_dob_year' id='user_dob_year'><option>YYYY</option><?php for($i=(date("Y")-17); $i > date("Y")-80; $i--) { echo "<option"; if ($i==$_REQUEST['user_dob_year']) echo " selected"; echo ">$i</option>"; }?></select></td></tr>
     <tr><td colspan=2 align=center><div id='formCheck'>&nbsp;</div></td></tr>
     <tr><td colspan=2 align=center><input type='submit' value='<?php echo $session->lang['REG_REGISTER']; ?>' onClick='verifyForm(); return false;'> &nbsp; <input type='reset' value='<?php echo $session->lang['REG_CANCEL']; ?>'></td></tr>
   </table>
@@ -44,6 +45,7 @@ $regions = $osInfo->getRegionList();
     echo "<pre>";
     print_r($_REQUEST);
     echo "</pre>";
+    $osInfo->createAccount($_REQUEST['user_fname'], $_REQUEST['user_lname'], $_REQUEST['user_pword'], $_REQUEST['user_startregion'], $_REQUEST['user_email']);
   }
 }
 ?>
