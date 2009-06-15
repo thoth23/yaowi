@@ -10,23 +10,31 @@
 */
 
 // General settings for the system
-$SITE_TITLE	= "OpenSimulator";
+$SITE_TITLE	= "Yaowi - OpenSimulator";
 $TEMPLATE_PATH	= "templates/default/";
-$SYSURL 	= "http://www.mysite.com/yaowi";
+$STATUS 	= "ONLINE";
+$SYSURL 	= "http://www.mysite.com/yaowi/";
 $SYSMAIL 	= "your@email.com";
 
+// Site statistics
+// Warning - enabling this option will increase the load on the MySQL server!
+$SYS_STATS	= true;
+
+// Google analytics - leave blank to disable, or enter your Google Analytics "Web Property ID"
+$SYS_GOOGLE_WPI = "";
 
 // Settings for the OpenSim database (MySQL only at the moment)
 $DB_HOST 	= "localhost";
 $DB_NAME 	= "opensim";
 $DB_USER 	= "opensim";
-$DB_PASS 	= "mysecret";
+$DB_PASS 	= "opensim";
 
 // Settings for the Yaowi database (MySQL only at the moment)
 $Y_DB_HOST 	= "localhost";
 $Y_DB_NAME	= "yaowi";
 $Y_DB_USER	= "yaowi";
 $Y_DB_PASS	= "yaowi";
+$Y_DB_PREFIX	= "ya_";
 
 // Default language - must be installed as a language pack
 $BASE_LANGUAGE	= "en";
@@ -35,9 +43,10 @@ $BASE_LANGUAGE	= "en";
 
 // Do we try and automatically match the language to the IP address?
 // This is experimental, and needs the appropriate language packs installed to work
-$AUTO_LANGUAGE  = true;
+$AUTO_LANGUAGE	= true;
 
 // Please leave the copyright intact for licence purposes
 $COPYRIGHT = "Powered by <a href=\"http://www.radioice.co.uk/yaowi\">Yaowi</a> - Copyright &copy; 2009 - Jay Eames / $SITE_TITLE";
+
 
 ?>
