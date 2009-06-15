@@ -6,6 +6,7 @@ Class Wiki
   public $PagePath;
   public $TableOfContents;
   public $ParsedText;
+  public $UnparsedText;
   public $Error;
   public $PageProtected = false;
   public $PageLastEdited;
@@ -14,19 +15,18 @@ Class Wiki
   public $PageCounter;
   public $PageExists = false;
 
-  function __construct() {
+  private $DBPrefix;
 
+  function __construct() {
+    include("settings.php");
+    $this->DBPrefix = $Y_DB_PREFIX;
   }
   
   public function getPage($page) {
-    include("settings.php");
     if (!is_null($page) && $page != "") {
 
-      mysql_connect($Y_DB_HOST,$Y_DB_USER,$Y_DB_PASS) or die (mysql_error());
-      @mysql_select_db($Y_DB_NAME) or die("Unable to select database $DB_NAME");
-
-      $query = "SELECT * FROM " . $Y_DB_PREFIX . "wiki_pages WHERE page_path = '" . $this->cleanQuery($page) . "'";
-      $result = mysql_query($query);
+      $query = "SELECT * FROM " . $this->DBPrefix . "wiki_pages WHERE page_path = '" . $this->cleanQuery($page) . "'";
+      $result = $this->queryDatabase($query);
       if ($result) {
 	if (mysql_numrows($result)) {
 	  $this->PagePath 		= mysql_result($result,0, "page_path");
@@ -35,8 +35,9 @@ Class Wiki
 	  $this->PageLastEdited 	= mysql_result($result,0, "page_last_edited");
 	  $this->PageLastEditor 	= mysql_result($result,0, "page_last_editor");
 	  $this->PageLastEditComment 	= mysql_result($result,0, "page_edit_comment");
+	  $this->UnparsedText		= mysql_result($result,0, "page_text");
 
-	  $this->parseText(mysql_result($result,0, page_text));
+	  $this->parsedText		= $this->parseText(mysql_result($result,0, page_text));
 	  $this->pageExists 		= true;
 
 	} else {
@@ -50,6 +51,20 @@ Class Wiki
     } else {
       $this->Error = "Sorry, there has been an error (NULL page request)";
     }
+  }
+
+  function queryDatabase($query) {
+
+    include("settings.php");
+
+    mysql_connect($Y_DB_HOST,$Y_DB_USER,$Y_DB_PASS) or die (mysql_error());
+    @mysql_select_db($Y_DB_NAME) or die("Unable to select database $DB_NAME");
+
+    $ret = mysql_query($query) or die (mysql_error());
+
+    mysql_close();
+
+    return $ret;
   }
 
   public function parseText($text) {
@@ -73,7 +88,8 @@ Class Wiki
     {
 	$html = substr($html, 0, $tocSplit) . $this->TableOfContents . substr($html, $tocSplit);
     }
-    $this->ParsedText = $html;
+
+    return $html;
 
   }
 
