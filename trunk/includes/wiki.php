@@ -37,8 +37,8 @@ Class Wiki
 	  $this->PageLastEditComment 	= mysql_result($result,0, "page_edit_comment");
 	  $this->UnparsedText		= mysql_result($result,0, "page_text");
 
-	  $this->parsedText		= $this->parseText(mysql_result($result,0, page_text));
-	  $this->pageExists 		= true;
+	  $this->ParsedText		= $this->parseText("\n" . mysql_result($result,0, "page_text"));
+	  $this->PageExists 		= true;
 
 	} else {
 	  $this->PagePath	= $page;
@@ -50,6 +50,24 @@ Class Wiki
 
     } else {
       $this->Error = "Sorry, there has been an error (NULL page request)";
+    }
+  }
+
+  public function updatePage($pageName, $pageTitle, $pageText, $pageEditor, $pageEditComment) {
+
+    // Does the page exist already?
+    $query = "SELECT * FROM " . $this->DBPrefix . "wiki_pages WHERE page_path ='" . $this->cleanQuery($pageName) . "'";
+    $result = $this->queryDatabase($query);
+    if ($result && mysql_numrows($result)) {
+      // Page exists - we need to archive the current one ... 
+      $query = "INSERT INTO " . $this->DBPrefix . "wiki_archive (page_path, page_title, page_text, page_counter, page_touched, page_is_redirect, page_is_protected, page_last_edited, page_last_editor, page_edit_comment, page_active) SELECT page_path, page_title, page_text, page_counter, page_touched, page_is_redirect, page_is_protected, page_last_edited, page_last_editor, page_edit_comment, page_active FROM " . $this->DBPrefix . "wiki_pages WHERE page_path ='" . $this->cleanQuery($pageName) . "'";
+      $this->queryDatabase($query);
+      // Now update
+      $query = "UPDATE " . $this->DBPrefix . "wiki_pages SET page_title='" . $this->cleanQuery($pageTitle) . "', page_text='" . $this->cleanQuery($pageText) . "', page_last_edited='" . time() . "', page_last_editor='" . $this->cleanQuery($pageEditor) . "', page_edit_comment='" . $this->cleanQuery($pageEditComment) . "' WHERE page_path='" . $this->cleanQuery($pageName) . "'";
+      $this->queryDatabase($query);
+    } else {
+      $query = "INSERT INTO " . $this->DBPrefix . "wiki_pages (page_path, page_title, page_text, page_last_edited, page_last_editor) VALUES ('" . $this->cleanQuery($pageName) . "', '" . $this->cleanQuery($pageTitle) . "', '" . $this->cleanQuery($pageText) . "', '" . time() . "', '" . $this->cleanQuery($pageEditor) . "')";
+      $this->queryDatabase($query);
     }
   }
 
