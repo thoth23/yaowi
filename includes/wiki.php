@@ -2,12 +2,57 @@
 
 Class Wiki
 {
+  public $PageTitle;
+  public $PagePath;
   public $TableOfContents;
-
   public $ParsedText;
-  
+  public $Error;
+  public $PageProtected = false;
+  public $PageLastEdited;
+  public $PageLastEditor;
+  public $PageLastEditComment;
+  public $PageCounter;
+  public $PageExists = false;
 
-  function __construct($text) {
+  function __construct() {
+
+  }
+  
+  public function getPage($page) {
+    include("settings.php");
+    if (!is_null($page) && $page != "") {
+
+      mysql_connect($Y_DB_HOST,$Y_DB_USER,$Y_DB_PASS) or die (mysql_error());
+      @mysql_select_db($Y_DB_NAME) or die("Unable to select database $DB_NAME");
+
+      $query = "SELECT * FROM " . $Y_DB_PREFIX . "wiki_pages WHERE page_path = '" . $this->cleanQuery($page) . "'";
+      $result = mysql_query($query);
+      if ($result) {
+	if (mysql_numrows($result)) {
+	  $this->PagePath 		= mysql_result($result,0, "page_path");
+	  $this->PageTitle 		= mysql_result($result,0, "page_title");
+	  $this->PageProtected 		= mysql_result($result,0, "page_is_protected");
+	  $this->PageLastEdited 	= mysql_result($result,0, "page_last_edited");
+	  $this->PageLastEditor 	= mysql_result($result,0, "page_last_editor");
+	  $this->PageLastEditComment 	= mysql_result($result,0, "page_edit_comment");
+
+	  $this->parseText(mysql_result($result,0, page_text));
+	  $this->pageExists 		= true;
+
+	} else {
+	  $this->PagePath	= $page;
+	  $this->PageTitle	= str_replace("_", " ", $page);
+	}
+      } else {
+	$this->Error = "Sorry, there has been an error (" . mysql_error() . ")";
+      }
+
+    } else {
+      $this->Error = "Sorry, there has been an error (NULL page request)";
+    }
+  }
+
+  public function parseText($text) {
     $html = $text;
     $html = html_entity_decode($html);
     $html = str_replace('&ndash;','-',$html);
@@ -244,5 +289,17 @@ Class Wiki
     //echo "<p>Table at the end: <pre>".htmlspecialchars($table)."</pre></p>";
     //echo $table;	
     return $table;
+  }
+
+  public function cleanQuery($string)
+  {
+    if(get_magic_quotes_gpc()) $string = stripslashes($string);
+
+    if (phpversion() >= '4.3.0')
+      $string = mysql_real_escape_string($string);
+    else
+      $string = mysql_escape_string($string);
+
+    return $string;
   }
 }

@@ -500,6 +500,13 @@ class OpenSim
     return false;
   
   }
+
+  public function createAccount($username, $lastname, $password, $homeregion, $email) {
+    $uuid = $this->createUUID();
+    $query = "INSERT INTO users ('UUID', 'username', 'lastname', 'passwordHash', 'homeRegion', 'created', 'email') ";
+    $query .= "VALUES ('$uuid', '$username', '$lastname', '" . md5(md5($password) . ":" ) . "', '$homeregion', '" . time() . "', '$email')";
+    echo $query;
+  }
   
 }
 
