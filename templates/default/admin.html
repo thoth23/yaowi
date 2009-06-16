@@ -4,6 +4,12 @@
 	} elseif ($session->userlevel < 2) {
 	    echo $session->lang['ADMIN_NOT_AUTHORISED'];
 	} else {
-	    echo "Plink!";
+	echo "[ <a href='" . $SYSURL . "?page=admin&sub=users'>Users</a> ";
+	echo " | <a href='" . $SYSURL . "?page=admin&sub=grid'>Grid</a> ";
+	echo " | <a href='" . $SYSURL . "?page=admin&sub=frontpage'>Front Page</a> ";
+	echo " | <a href='" . $SYSURL . "?page=admin&sub=alerts'>Alerts</a> ";
+	echo " | <a href='" . $SYSURL . "?page=admin&sub=stats'>Stats</a> ";
+	echo "]";
+
 	}
     ?>

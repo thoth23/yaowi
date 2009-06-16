@@ -235,7 +235,6 @@ div.autocomplete ul li {
 #gridStatusBox {
   width: 300px;
   height: 120px;
-  float: right;
   background: #000000;
   background-image: url("../images/loginBoxCorners.png");
   color: #cccccc;
@@ -401,26 +400,38 @@ div.autocomplete ul li {
   margin-left: 75px;
 }
 
-.treelist {
-  margin:0px;
-  padding:0px;
+
+.sysAlerts {
+	border: solid 1px #cccccc;
+	background: url(../images/warning.gif) 5px 2px no-repeat #ffff99;
+	min-height: 30px;
+	padding-left: 30px;
 }
 
-.treelist ul {	/* Sub menu groups */
-  margin-left:20px;	/* Left spacing */
-  padding-left:0px;
-  display:none;	/* Initially hide sub nodes */
+.sysAlertsText {
+	color: black;
+	padding-left: 10px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	font-weight : bold;
+	font-family : Tahoma;
+	font-size : 11px;
 }
 
-.treelist li{	/* Nodes */
-  list-style-type:none;
-  vertical-align:middle;		
+.sysMessage {
+	border: solid 1px #cccccc;
+	background: url(../images/sysgood.gif) 5px 2px no-repeat #eeffee;
+	height: 30px;
+	padding-left: 30px;
 }
-	
-.treelist li a{	/* Node links */
-  color:#fff;
-  text-decoration:none;
-  font-family:arial;
-  font-size:0.8em;
-  padding-left:2px;
+
+.sysMessageText {
+	color: black;
+	padding-left: 10px;
+	padding-top: 8px;
+	font-weight : bold;
+	font-family : Tahoma;
+	font-size : 11px;
 }
+
+

@@ -42,10 +42,10 @@ $regions = $osInfo->getRegionList();
 
 <?php
   } else if ($_REQUEST['sub']) {
-    echo "<pre>";
-    print_r($_REQUEST);
-    echo "</pre>";
-    $osInfo->createAccount($_REQUEST['user_fname'], $_REQUEST['user_lname'], $_REQUEST['user_pword'], $_REQUEST['user_startregion'], $_REQUEST['user_email']);
+//    echo "<pre>";
+//    print_r($_REQUEST);
+//    echo "</pre>";
+    $session->createUser($osInfo->createUUID(), $_REQUEST['user_fname'], $_REQUEST['user_lname'], $_REQUEST['user_pword'], $_REQUEST['user_startregion'], $_REQUEST['user_email'], $_REQUEST['user_realfname'], $_REQUEST['user_reallname'], mktime(0,0,0,$_REQUEST['user_dob_month'], $_REQUEST['user_dob_day'], $_REQUEST['user_dob_year']));
   }
 }
 ?>
