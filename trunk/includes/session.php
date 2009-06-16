@@ -20,10 +20,16 @@ Class Session {
   public $supportlevel;
 
   private $DBPrefix;
+  private $SITENAME;
+  private $SITEEMAIL;
+  private $SITEURL;
 
   function __construct($fname = NULL, $lname = NULL, $password = NULL, $logoff = false) {
     require("settings.php");
     $this->DBPrefix = $Y_DB_PREFIX;
+    $this->SITENAME = $SITE_TITLE;
+    $this->SITEEMAIL = $SYSMAIL;
+    $this->SITEURL = $SYSURL;
 
     $this->lClass = new Language();
     session_start();
@@ -236,8 +242,44 @@ Class Session {
     }
   }
 
-  public function createUser($user_fname, $user_lname, $user_pass, $user_startregion, $user_email, $user_realfname, $user_reallname, $user_dob) {
+  public function createUser($uuid, $user_fname, $user_lname, $user_pass, $user_startregion, $user_email, $user_realfname, $user_reallname, $user_dob) {
+    $query = "INSERT INTO " . $this->DBPrefix . "users (uuid, email, real_firstname, real_lastname, user_dob, created, userip, active) VALUES ('" . $this->cleanQuery($uuid) . "', '" . $this->cleanQuery($user_email) . "', '" . $this->cleanQuery($user_realfname) . "', '" . $this->cleanQuery($user_reallname) . "', '" . $this->cleanQuery($user_dob) . "', '" . time() . "', '" . $_SERVER['REMOTE_ADDR'] . "', 1)"; 
+    $result = $this->queryYaowiDatabase($query);
+    if ($result) {
+    $authcode = md5(md5(md5(time()) . $_user_fname) . $user_lname) . md5($uuid);
+      $query = "INSERT INTO " . $this->DBPrefix . "authcodes (uuid, user_fname, user_lname, user_password, user_startregion, authcode, timestamp) VALUES ('" . $this->cleanQuery($uuid) . "',
+'" . $this->cleanQuery($user_fname) . "', '" . $this->cleanQuery($user_lname) . "', '" . $this->cleanQuery($user_pass) . "', '" . $this->cleanQuery($user_startregion) . "', '"
+. $authcode . "', '" . time() . "')";
+      $result = $this->queryYaowiDatabase($query);
+      if ($result) {
+	$authlink = $this->SITEURL . "index.php?verify=" . $authcode;
+	$to      = $user_email;
+	$subject = 'Authenticate ' . $this->SITENAME . " account";
+	$headers  = 'MIME-Version: 1.0' . "\r\n";
+	$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+	$headers .= 'From: ' . $this->SITEEMAIL . "\r\n" .
+	    'Reply-To: ' . $this->SITEEMAIL . "\r\n" .
+	    'X-Mailer: PHP/' . phpversion();
 
+	$message = '
+<html>
+<head>
+  <title>Welcome to ' . $this->SITENAME . '</title>
+</head>
+<body>
+  <p>Hello ' . $user_realfname . '</p>
+  <p>' . str_replace("AUTH_LINK", $authlink, str_replace("SITENAME", $this->SITENAME, $this->lang['REG_VERIFY_EMAIL'])) . '</p>
+</body>
+</html>
+';
+	if (mail($to, $subject, $message, $headers)) {
+	  echo "<table width=100% height=100%><tr><td align=center>" . str_replace("EMAIL_ADDRESS", $user_email, $this->lang['REG_VERIFY_REG']) . "</td></tr></table>";
+	} else {
+	  echo "Sorry, there has been an error - please contact the site administrator. If you are the site administrator, we recommend checking your mail logs";
+	}
+
+      }
+    }
   }
 
 }

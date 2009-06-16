@@ -40,6 +40,10 @@ Class Wiki
 	  $this->ParsedText		= $this->parseText("\n" . mysql_result($result,0, "page_text"));
 	  $this->PageExists 		= true;
 
+	  // Update the page count;
+	  $query = "UPDATE " . $this->DBPrefix . "wiki_pages SET page_counter = page_counter + 1 WHERE page_path = '" . $this->cleanQuery($page) . "'";
+	  $this->queryDatabase($query);
+
 	} else {
 	  $this->PagePath	= $page;
 	  $this->PageTitle	= str_replace("_", " ", $page);

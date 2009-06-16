@@ -7,7 +7,7 @@
 	  if ($session->logged_in) {
 	    echo $session->lang['GEN_WELCOME'] . " " . $session->username . "<br>[<a href='$SYSURL?page=myaccount'>" . $session->lang['GEN_MY_ACCOUNT'] . "</a> | <a href='$SYSURL?action=logoff&page=" . $_REQUEST['page'] . "'>" . $session->lang['GEN_LOGOFF'] . "</a>"; 
 	    if ($session->userlevel == 5)
-	      echo " | <a href='?page=admin'>" . $session->lang['GEN_ADMIN'] . "</a>";
+	      echo " | <a href='" . $SYSURL . "index.php?page=admin'>" . $session->lang['GEN_ADMIN'] . "</a>";
 	    echo "]"; 
 	  } else {
 	    echo $session->lang['GEN_WELCOME'] . " " .  $session->lang['GEN_GUEST'] . "<br>[<a href='#' onClick=\"showLogon(); return false;\">" . $session->lang['GEN_LOGON'] . "</a> | <a href='$SYSURL?page=create'>" . $session->lang['GEN_CREATE_ACCOUNT'] . "</a>]"; 
