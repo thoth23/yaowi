@@ -12,13 +12,19 @@ Class Session {
   public $uuid;
   public $logged_in = false;
   public $login_message;
-  public $userlevel;
   public $userIP;
   public $userCountry;
 
+  public $userlevel;
+  public $authorlevel;
+  public $supportlevel;
+
+  private $DBPrefix;
 
   function __construct($fname = NULL, $lname = NULL, $password = NULL, $logoff = false) {
     require("settings.php");
+    $this->DBPrefix = $Y_DB_PREFIX;
+
     $this->lClass = new Language();
     session_start();
 
@@ -99,53 +105,88 @@ Class Session {
     }
   }
 
-  public function setVars($fname, $lname) {
+  function queryDatabase($query) {
     require("settings.php");
     // Open the Database
     mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
-    // Get online user count
+    $ret = mysql_query($query);
+
+    mysql_close();
+    return $ret;
+  }
+
+  function queryYaowiDatabase($query) {
+    require("settings.php");
+    // Open the Database
+    mysql_connect($Y_DB_HOST,$Y_DB_USER,$Y_DB_PASS) or die (mysql_error());
+    @mysql_select_db($Y_DB_NAME) or die("Unable to select database $Y_DB_NAME");
+    $ret = mysql_query($query) or die(mysql_error());
+
+    mysql_close();
+
+    return $ret;
+  }
+  
+  public function setVars($fname, $lname) {
+
     $query = "SELECT * FROM users WHERE username='" . $this->cleanQuery($fname) . "' AND lastname='" . $this->cleanQuery($lname) . "'";
 
-    $result = mysql_query($query);    
+    $result = $this->queryDatabase($query);
+
     if (mysql_numrows($result)) {
         $this->logged_in = true;
 	$this->firstname = mysql_result($result, 0, "username");
 	$this->lastname = mysql_result($result, 0, "lastname");
 	$this->username = mysql_result($result, 0, "username") . " " . mysql_result($result, 0, "lastname");
 	$this->uuid = mysql_result($result, 0, "UUID");
+
 	$_SESSION['fname'] = mysql_result($result, 0, "username");
 	$_SESSION['lname'] = mysql_result($result, 0, "lastname");
 	$_SESSION['uuid'] = mysql_result($result, 0, "UUID");
+	$query = "SELECT * FROM " . $this->DBPrefix . "users WHERE uuid = '" . $this->uuid . "'";
+	$res = $this->queryYaowiDatabase($query);
+	if (!is_null($res) && mysql_numrows($res)>0) {
+	  $this->userlevel = mysql_result($res,0,"adminLevel");
+	  $this->supportlevel = mysql_result($res,0,"supportLevel");
+	  $this->authorlevel = mysql_result($res,0,"authorLevel");
+	}
     }
   }
 
   public function checkPassword($firstname, $lastname, $password) {
-    require("settings.php");
-
     $passcheck = md5(md5($password) . ":" );
-
-    // Open the Database
-    mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
-    @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
     // Get user
     $query = "SELECT * FROM users WHERE username='" . $this->cleanQuery($firstname) . "' AND lastname='" . $this->cleanQuery($lastname) . "'";
 
-    $result = mysql_query($query);
+    $result = $this->queryDatabase($query);
     if (mysql_numrows($result)) {
 	// We have found the user
-	if ($passcheck == mysql_result($result, 0, "passwordHash")) 
-		return array(true, "Login ok");
-	else
-		return array(false, "Password incorrect");
+	if ($passcheck == mysql_result($result, 0, "passwordHash")) {
+	    // Check to see if they are in the web interface user db
+	    $query = "SELECT * FROM " . $this->DBPrefix . "users WHERE uuid = '" . mysql_result($result, 0, "UUID") . "'";
+	    $res = $this->queryYaowiDatabase($query);
+	    if (!$res || mysql_numrows($res)==0) {
+		// User doesn't exist!
+		$query = "INSERT INTO " . $this->DBPrefix . "users (uuid, created, userip, active) VALUES ('" . mysql_result($result, 0, "UUID") . "', '" . time() . "', '" . $_SERVER['REMOTE_ADDR'] . "', 1)";
+		if ($this->queryYaowiDatabase($query)) {
+	          return array(true, "Login ok");
+		} else {
+		  echo $query;
+		  return array(false, "Error adding user to Yaowi database");
+		}
+	    } else {
+	      return array(true, "Login ok");
+	    }
+	} else {
+	    return array(false, "Password incorrect");
+	}
 
     } else {
 	return array(false, "Username not found");
     }
-
-    mysql_close();
   }
   
   public function cleanQuery($string)
@@ -193,6 +234,10 @@ Class Session {
     } else {
       return true;
     }
+  }
+
+  public function createUser($user_fname, $user_lname, $user_pass, $user_startregion, $user_email, $user_realfname, $user_reallname, $user_dob) {
+
   }
 
 }
