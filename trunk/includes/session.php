@@ -242,6 +242,23 @@ Class Session {
     }
   }
 
+  public function verifyAccount($verify) {
+    $query = "SELECT * FROM " . $this->DBPrefix . "authcodes WHERE authcode='" . $this->cleanQuery($verify) . "'";
+    $result = $this->queryYaowiDatabase($query);
+    if (mysql_numrows($result)) {
+      $os = new OpenSim();
+      if ($os->createAccount(mysql_result($result,0, "uuid"), mysql_result($result,0, "user_fname"), mysql_result($result,0, "user_lname"), mysql_result($result,0, "user_password"), mysql_result($result,0, "user_startregion"))) {
+	$query = "DELETE FROM " . $this->DBPrefix . "authcodes WHERE authcode='" . $this->cleanQuery($verify) . "'";
+	$this->queryYaowiDatabase($query);
+	echo str_replace("NAME", mysql_result($result,0, "user_fname"), $this->lang['REG_VERIFY_SUCCESS']);
+      } else {
+        echo $this->lang['REG_VERIFY_FAIL'];
+      }
+    } else {
+      echo $this->lang['REG_VERIFY_FAIL'];
+    }
+  }
+
   public function createUser($uuid, $user_fname, $user_lname, $user_pass, $user_startregion, $user_email, $user_realfname, $user_reallname, $user_dob) {
     $query = "INSERT INTO " . $this->DBPrefix . "users (uuid, email, real_firstname, real_lastname, user_dob, created, userip, active) VALUES ('" . $this->cleanQuery($uuid) . "', '" . $this->cleanQuery($user_email) . "', '" . $this->cleanQuery($user_realfname) . "', '" . $this->cleanQuery($user_reallname) . "', '" . $this->cleanQuery($user_dob) . "', '" . time() . "', '" . $_SERVER['REMOTE_ADDR'] . "', 1)"; 
     $result = $this->queryYaowiDatabase($query);

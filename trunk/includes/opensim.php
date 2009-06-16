@@ -52,7 +52,7 @@ class OpenSim
     mysql_connect($DB_HOST,$DB_USER,$DB_PASS) or die (mysql_error());
     @mysql_select_db($DB_NAME) or die("Unable to select database $DB_NAME");
 
-    $ret = mysql_query($query);
+    $ret = mysql_query($query) or die(mysql_error());
 
     mysql_close();
 
@@ -414,11 +414,11 @@ class OpenSim
   
   }
 
-  public function createAccount($username, $lastname, $password, $homeregion, $email) {
-    $uuid = $this->createUUID();
-    $query = "INSERT INTO users ('UUID', 'username', 'lastname', 'passwordHash', 'homeRegion', 'created', 'email') ";
-    $query .= "VALUES ('$uuid', '$username', '$lastname', '" . md5(md5($password) . ":" ) . "', '$homeregion', '" . time() . "', '$email')";
-    echo $query;
+  public function createAccount($uuid, $username, $lastname, $password, $homeregion) {
+    $query = "INSERT INTO users (UUID, username, lastname, passwordHash, homeRegion, created) ";
+    $query .= "VALUES ('$uuid', '$username', '$lastname', '" . md5(md5($password) . ":" ) . "', '$homeregion', '" . time() . "')";
+    $this->queryDatabase($query);
+    return true;
   }
   
 }

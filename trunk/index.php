@@ -28,6 +28,8 @@
 
     if (!is_null($_SERVER['PATH_INFO'])) {
         require_once($TEMPLATE_PATH . "wiki.php");
+    } elseif (!$session->logged_in && !is_null($_REQUEST['verify']) && $_REQUEST['verify']!="") {
+	echo "<table width=100% height=100%><tr><td align=center>" . $session->verifyAccount($_REQUEST['verify']) . "</td></tr></table>";
     } else {
 
         if (is_null($_REQUEST["page"])) $_REQUEST["page"] = "home";
