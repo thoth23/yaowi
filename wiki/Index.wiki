@@ -1,4 +1,5 @@
 #summary Yaowi for OpenSim
+#labels Featured
 #sidebar WikiSidebar
 
 =Yet Another OpenSim Web Interface=
