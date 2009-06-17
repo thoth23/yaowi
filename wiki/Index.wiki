@@ -21,5 +21,7 @@ Within this will be an OpenSim api, which will hopefully allow other projects to
 
 To view the work in progress, visit [http://www.radioice.co.uk/yaowi The Yaowi demo page]
 
+The roadmap can be seen [Roadmap here]
+
 *Important note*
 Yaowi is still very much in the planning stage, and is in no way, shape or form available or ready for production. At this time I am looking for other PHP coders to help bring together the many parts of this project. If you are interested in joining the project, please drop me an e-mail at alchamist at googlemail dot com. 
