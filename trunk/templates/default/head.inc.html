@@ -116,4 +116,18 @@ function verifyForm() {
   }
 }
 
+function showNews(id) {
+  var mb = "more" + id;
+  var lb = "less" + id;
+  if (document.getElementById(id).style.display == "none") {
+    document.getElementById(id).style.display = "block";
+    document.getElementById(mb).style.display = "none";
+    document.getElementById(lb).style.display = "block";
+  } else {
+    document.getElementById(id).style.display = "none";
+    document.getElementById(mb).style.display = "block";
+    document.getElementById(lb).style.display = "none";
+  }
+}
+
 </script>
