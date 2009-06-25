@@ -447,3 +447,18 @@ li.fadmin_path {
 	padding-right: 5px;
 	background: url(../images/bullet_right_arrow.gif) no-repeat;
 }
+
+.newsAdd {
+        background: url(../images/new.gif) no-repeat;
+        padding-left: 20px;
+}
+
+.newsEdit {
+        background: url(../images/edit.gif) 5px no-repeat;
+        padding-left: 20px;
+}
+
+.newsDelete {
+        background: url(../images/delete.gif) no-repeat;
+        padding-left: 20px;
+}
