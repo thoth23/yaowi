@@ -435,3 +435,15 @@ div.autocomplete ul li {
 }
 
 
+ul.fadmin_nav {
+	padding: 0;
+	margin-left: 0px;
+	list-style: url(../images/bullet_right_arrow.gif);
+}
+
+li.fadmin_path {
+	display: inline;
+	padding-left: 20px;
+	padding-right: 5px;
+	background: url(../images/bullet_right_arrow.gif) no-repeat;
+}

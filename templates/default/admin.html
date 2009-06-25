@@ -1,15 +1,68 @@
-    <?php 
-	if (!$session->logged_in) {
-	    echo $session->lang['ADMIN_NOT_LOGGED_IN'];
-	} elseif ($session->userlevel < 2) {
-	    echo $session->lang['ADMIN_NOT_AUTHORISED'];
-	} else {
-	echo "[ <a href='" . $SYSURL . "?page=admin&sub=users'>Users</a> ";
-	echo " | <a href='" . $SYSURL . "?page=admin&sub=grid'>Grid</a> ";
-	echo " | <a href='" . $SYSURL . "?page=admin&sub=frontpage'>Front Page</a> ";
-	echo " | <a href='" . $SYSURL . "?page=admin&sub=alerts'>Alerts</a> ";
-	echo " | <a href='" . $SYSURL . "?page=admin&sub=stats'>Stats</a> ";
-	echo "]";
+<?php 
 
-	}
-    ?>
+if (!$session->logged_in) {
+    echo $session->lang['ADMIN_NOT_LOGGED_IN'];
+} elseif ($session->userlevel < 2) {
+  echo $session->lang['ADMIN_NOT_AUTHORISED'];
+} else {
+  if ($_REQUEST['action']=="addcat") {
+    echo "Adding category";
+  }
+  echo "[ <a href='" . $SYSURL . "?page=admin&sub=users'>" . $session->lang['ADMIN_LINK_USERS'] . "</a> ";
+  echo " | <a href='" . $SYSURL . "?page=admin&sub=grid'>" . $session->lang['ADMIN_LINK_GRID'] . "</a> ";
+  echo " | <a href='" . $SYSURL . "?page=admin&sub=frontpage'>" . $session->lang['ADMIN_LINK_FRONTPAGE'] . "</a> ";
+  echo " | <a href='" . $SYSURL . "?page=admin&sub=alerts'>" . $session->lang['ADMIN_LINK_ALERTS'] . "</a> ";
+  echo " | <a href='" . $SYSURL . "?page=admin&sub=forums'>" . $session->lang['ADMIN_LINK_FORUMS'] . "</a> ";
+  echo " | <a href='" . $SYSURL . "?page=admin&sub=stats'>" . $session->lang['ADMIN_LINK_STATS'] . "</a> ";
+  echo "]";
+
+  if (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "grid") {
+    echo "<h2>" . $session->lang['ADMIN_LINK_GRID'] . "</h2>";
+  } elseif (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "frontpage") {
+    echo "<h2>" . $session->lang['ADMIN_LINK_FRONTPAGE'] . "</h2>";
+  } elseif (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "alerts") {
+    echo "<h2>" . $session->lang['ADMIN_LINK_ALERTS'] . "</h2>";
+  } elseif (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "forums") {
+    echo "<h2>" . $session->lang['ADMIN_LINK_FORUMS'] . "</h2>";
+?>
+    <ul class='fadmin_nav'>
+      <li class='fadmin_path'><a href='<?php echo $SYSURL; ?>index.php?page=admin&sub=forums'>Root</a></li>
+    </ul>
+    <table style='margin-top: 10px;'>
+      <tr valign=top>
+        <?php
+	  $query = "SELECT * FROM " . $Y_DB_PREFIX . "forum_categories";
+	  if (!$_REQUEST['category']) 	$query .= " WHERE parent_id = NULL";
+	  else				$query .= " WHERE parent_id = '" . $_REQUEST['category'] . "'";
+
+	  $res = $session->queryYaowiDatabase($query);
+	  if (mysql_numrows($res)) {
+
+	  } else {
+	    echo $session->lang['ADMIN_F_NO_CATEGORYS'];
+	  }
+	?>
+      </tr>
+      <tr>
+	<td>
+	  <form method=post>
+	    <input type='hidden' name='action' value='addcat'>
+	    <input type='hidden' name='catparent' value='<?php echo $_REQUEST['category']; ?>'>
+	    <?php echo $session->lang['ADMIN_F_ADD_CAT']; ?>: <input type='text' name='addCategory' size=50> &nbsp; <input type='submit' value='Add'>
+	  </form>
+	</td>
+      </tr>
+    </table>
+
+<?php
+  } elseif (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "stats") {
+    echo "<h2>" . $session->lang['ADMIN_LINK_STATS'] . "</h2>";
+  } else {
+    echo "<h2>" . $session->lang['ADMIN_LINK_USERS'] . "</h2>";
+  }
+}
+
+
+
+
+?>

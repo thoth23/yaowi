@@ -123,7 +123,7 @@ Class Session {
     return $ret;
   }
 
-  function queryYaowiDatabase($query) {
+  public function queryYaowiDatabase($query) {
     require("settings.php");
     // Open the Database
     mysql_connect($Y_DB_HOST,$Y_DB_USER,$Y_DB_PASS) or die (mysql_error());
@@ -257,6 +257,29 @@ Class Session {
     } else {
       echo $this->lang['REG_VERIFY_FAIL'];
     }
+  }
+
+  public function getNews($search = NULL, $start = 0) {
+    $query = "SELECT * FROM " . $this->DBPrefix . "news";
+    if (!is_null($search)) {
+      $query .= " WHERE (title LIKE '%" . $this->cleanQuery($search) . "%' OR  body LIKE '%" . $this->cleanQuery($search) . "%' OR extended LIKE '%" . $this->cleanQuery($search) . "%')";
+      $query .= " AND active = 1";
+    } else {
+      $query .= " WHERE  active = 1";
+    }
+    $query .= " ORDER BY posted DESC";
+    $query .= " LIMIT " . $this->cleanQuery($start) . ",3";
+
+    return $this->queryYaowiDatabase($query);
+  }
+
+  public function getNewsCount($search = NULL) {
+    $query = "SELECT COUNT(id) AS count FROM " . $this->DBPrefix . "news";
+    if (!is_null($search)) {
+      $query .= " WHERE title LIKE '%" . $this->cleanQuery($search) . "%'";
+    }
+    $result = $this->queryYaowiDatabase($query);
+    return mysql_result($result,0,"count");
   }
 
   public function createUser($uuid, $user_fname, $user_lname, $user_pass, $user_startregion, $user_email, $user_realfname, $user_reallname, $user_dob) {
