@@ -20,6 +20,8 @@ if (!$session->logged_in) {
     echo "<h2>" . $session->lang['ADMIN_LINK_GRID'] . "</h2>";
   } elseif (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "frontpage") {
     echo "<h2>" . $session->lang['ADMIN_LINK_FRONTPAGE'] . "</h2>";
+    echo "<textarea id='tinyMCE' style='width: 100%;' rows=25></textarea>";
+
   } elseif (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "alerts") {
     echo "<h2>" . $session->lang['ADMIN_LINK_ALERTS'] . "</h2>";
   } elseif (!is_null($_REQUEST['sub']) && $_REQUEST['sub'] == "forums") {
