@@ -296,6 +296,11 @@ div.autocomplete ul li {
   margin: 1px;
 }
 
+.news {
+  padding-top: 0px;
+  margin-top: 0px;
+}
+
 /* Wiki stuff */
 
 #wiki {
