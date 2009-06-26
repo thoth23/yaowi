@@ -1,0 +1,74 @@
+<table width=100%>
+  <tr valign=top>
+    <td width=150><br>
+      <a href='<?php echo $SYSURL; ?>?page=news&category=latest'>Latest news</a><br>
+      <a href='<?php echo $SYSURL; ?>?page=news&category=all'>All news</a>
+      <br><br>
+      <?php
+	$cats = $session->getCategories();
+	if (mysql_numrows($cats)) {
+	  echo "Categories:<br>\n";
+
+  	  while ($row=mysql_fetch_assoc($cats)) {
+	    echo "<a href='" . $SYSURL . "?page=news&category=" . $row['id'] . "'>" . $row['category_name'] . "</a><br>\n";
+	  }
+	}
+      ?>
+    </td>
+    <td>
+
+<?php
+if (!is_null($_REQUEST['action']) && ($session->userlevel > 2 || $session->authorlevel)) {
+  if ($_REQUEST['action'] == "add") {
+
+  } elseif ($_REQUEST['action'] == "edit") {
+
+  } elseif ($_REQUEST['action'] == "delete") {
+
+  }
+} else {
+  if (is_null($_REQUEST['category']) || $_REQUEST['category'] == "") {
+    $news = $session->getNews();
+  } elseif ($_REQUEST['category']=="latest" || $_REQUEST['category']=="all") {
+    $news = $session->getNews();
+  } else {
+    $news = $session->getNewsCategory();
+  }
+
+  while($row=mysql_fetch_assoc($news)) {
+    $id = $row['id'];
+    $title = $row['title'];
+    $body = nl2br($row['body']);
+    $extended = nl2br($row['extended']);
+    $posted = date($session->lang['NEWS_DATE_FORMAT'], $row['posted']);
+    $poster = $row['poster'];
+?>
+  <table width=100% style='background: #333333;'>
+    <tr><td><h2 class='news'><?php echo $title; ?></h2></td></tr>
+    <tr><td><?php echo $body; ?></td></tr>
+<?php  if ($extended != "") { ?>
+    <tr><td><div id='more<?php echo $id; ?>'><a href='#' onClick = 'showNews(<?php echo $id; ?>);'><?php echo $session->lang['NEWS_MORE']; ?></a></div></td></tr>
+    <tr><td><div id='<?php echo $id; ?>' style='display: none'><?php echo $extended; ?></div></td></tr>
+    <tr><td><div id='less<?php echo $id; ?>' style='display: none;'><a href='#' onClick = 'showNews(<?php echo $id; ?>);'><?php echo $session->lang['NEWS_LESS']; ?></a></div></td></tr>
+<?php } ?>
+    <tr><td align=right style='border-bottom: solid 1px #666666; border-top: solid 1px #666666; color: #aaaaaa;'><i>
+[<?php echo $session->lang['NEWS_AUTHOR'] . ": " . $poster . " - " . $session->lang['NEWS_POSTED_DATE'] . ": " . $posted; ?>]</i>
+<?php if ($session->userlevel >=2 || $session->authorlevel) {
+    echo "<br>[<a href='" . $SYSURL . "?page=news&action=edit&item=$id' class='newsEdit'>" . $session->lang['NEWS_EDIT_ITEM'] . "</a> | ";
+    echo "<a href='" . $SYSURL . "?page=news&action=delete&item=$id' class='newsDelete'>" . $session->lang['NEWS_DELETE_ITEM'] . "</a> ]";
+}
+?>
+    </td></tr>
+  </table>
+  <br><br>
+<?php
+  }
+  if ($session->userlevel >= 2 || $session->authorlevel) {
+  echo "<a href='" . $SYSURL . "?page=news&action=add' class='newsAdd'>" . $session->lang['NEWS_ADD_ITEM'] . "</a>";
+  }
+}
+?>
+
+    </td>
+  </tr>
+</table>
