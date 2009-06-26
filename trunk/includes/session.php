@@ -259,6 +259,11 @@ Class Session {
     }
   }
 
+  public function getCategories() {
+    $query = "SELECT DISTINCT category_name, id FROM " . $this->DBPrefix . "news_categories";
+    return $this->queryYaowiDatabase($query);
+  }
+
   public function getNews($search = NULL, $start = 0) {
     $query = "SELECT * FROM " . $this->DBPrefix . "news";
     if (!is_null($search)) {
